@@ -17,7 +17,7 @@
 </style>
 
 <div id="questionCreateContainer" > 
-    <form method="post" class="form" action="{{ url('/') }}/exam/store" id="form" autocomplete="off" >   
+    <form method="post" class="form" action="{{ url('/') }}/exam/update/{{ $exam->id }}" id="form" autocomplete="off" >   
         @csrf
 
         <div class="slide slide-1 row" style="display: block">
@@ -25,66 +25,55 @@
                 <tr>
                     <td>{{ __('exam name') }} *</td>
                     <td>
-                        <input name="name" required="" class="form-control" placeholder="{{ __('exam name') }}"  >
+                        <input name="name" required="" class="form-control" value="{{ $exam->name }}" placeholder="{{ __('exam name') }}"  >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('start_time') }} *</td>
                     <td>
-                        <input name="start_time" type="datetime" required="" class="form-control" id="startDate" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{ date('Y-m-d H:i:s') }}"  >
+                        <input name="start_time" type="datetime" required="" class="form-control" id="startDate" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{ $exam->start_time }}"  >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('end_time') }} *</td>
                     <td>
-                        <input name="end_time" type="datetime" required="" class="form-control" id="endDate" data-date-format="yyyy-mm-dd hh:ii:ss"  value="{{ date('Y-m-d H:i:s') }}"  >
+                        <input name="end_time" type="datetime" required="" class="form-control" id="endDate" data-date-format="yyyy-mm-dd hh:ii:ss"  value="{{ $exam->end_time }}"  >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('minutes') }} *</td>
                     <td>
-                        <input name="minutes" type="number" required="" class="form-control"   >
+                        <input name="minutes" type="number" required="" class="form-control" value="{{ $exam->minutes }}"   >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('total') }} *</td>
                     <td>
-                        <input name="total" type="number" required="" class="form-control"   >
+                        <input name="total" type="number" required="" class="form-control" value="{{ $exam->total }}"   >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('question_number') }} *</td>
                     <td>
-                        <input name="question_number" type="number" required="" class="form-control"   >
+                        <input name="question_number" type="number" required="" class="form-control" value="{{ $exam->question_number }}"   >
                     </td>
-                </tr>
-                <tr>
-                    <td>{{ __('course') }} *</td>
-                    <td>
-                        <select class="form-control select2  w3-block course-select"   onchange="filterWithCourse();" name="course_id"  >
-                            <option   value="" >{{ __('select course') }}</option>
-                            @foreach(Auth::user()->doctorCourses()->get() as $item)
-                            <option value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
-                            @endforeach
-                        </select> 
-                    </td>
-                </tr>
+                </tr> 
                 <tr>
                     <td>{{ __('header_text') }} </td>
                     <td>
-                        <textarea name="header_text"  class="form-control" placeholder="{{ __('header_text') }}"  ></textarea>
+                        <textarea name="header_text"  class="form-control" value="{{ $exam->header_text }}" placeholder="{{ __('header_text') }}"  ></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('footer_text') }} </td>
                     <td>
-                        <textarea name="footer_text"  class="form-control" placeholder="{{ __('footer_text') }}"  ></textarea>
+                        <textarea name="footer_text"  class="form-control" value="{{ $exam->footer_text }}" placeholder="{{ __('footer_text') }}"  ></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('notes') }} </td>
                     <td>
-                        <textarea name="notes"  class="form-control" placeholder="{{ __('notes') }}"  ></textarea>
+                        <textarea name="notes"  class="form-control" placeholder="{{ __('notes') }}"  >{{ $exam->notes }}</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -94,8 +83,9 @@
                             <input 
                                 id="requiredPassword"  
                                 name="required_password"   
-                                value="0"
-                                onchange="this.checked ? this.value = 1 : this.value = 0" 
+                                value="{{ $exam->required_password }}"
+                                {{ $exam->required_password? 'checked' : '' }}
+                                onchange="this.checked? this.value = 1 : this.value = 0" 
                                 type="checkbox"/>
                             <label for="requiredPassword" onclick="$('.password-field').toggle()" class="label-primary"></label>
                         </div>
@@ -104,7 +94,7 @@
                 <tr style="display: none" class="password-field" >
                     <td>{{ __('password') }}</td>
                     <td>
-                        <input name="password" type="password"   class="form-control"   >
+                        <input name="password" type="password" value="{{ $exam->password }}"  class="form-control"   >
                     </td>
                 </tr> 
             </table>
@@ -180,7 +170,8 @@
                                 <input 
                                     id="questionNumber{{$item->id}}"  
                                     name="is_selected[]"   
-                                    value="0"
+                                    value="{{ $exam->hasQuestion($item->id) }}"
+                                    {{ $exam->hasQuestion($item->id)? 'checked' : '' }}
                                     onchange="this.checked ? this.value = 1 : this.value = 0" 
                                     type="checkbox"/>
                                 <label for="questionNumber{{$item->id}}"  class="question-label label-primary"></label>
@@ -208,8 +199,9 @@
 @section("js") 
 
 <script>
+    var course = {{ $exam->course_id }};
     function filterWithCourse() {
-        var course = $('.course-select').val();
+        var course = {{ $exam->course_id }};
         $(".question-tr").hide();
         $(".question-tr").removeClass('question-row');
         $(".question-tr[data-course=" + course + "]").each(function(){
@@ -274,9 +266,10 @@
         $('#endDate').datetimepicker();
 
         formAjax(false, function (r) {
-            showPage('exam/create');
+            showPage('exam');
         });
 
+        filterWithCourse();
     });
 </script>
 @endsection

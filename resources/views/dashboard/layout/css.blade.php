@@ -42,9 +42,11 @@
 
 <!-- Bootstrap time Picker -->
 <link rel="stylesheet" href="{{ url('/') }}/plugins/timepicker/bootstrap-timepicker.min.css">
+<link rel="stylesheet" href="{{ url('/') }}/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 
 <!-- my style -->
 <link rel="stylesheet" href="{{ url('/') }}/css/w3.css">
+<link rel="stylesheet" href="{{ url('/') }}/css/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/bootstrap-switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/iziToast.css">

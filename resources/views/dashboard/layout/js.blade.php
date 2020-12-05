@@ -31,7 +31,7 @@
 </script>
 <!-- time picker -->
 <script src="{{ url('/') }}/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-
+<script src="{{ url('/') }}/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- datatable plugins-->
 {!! view("dashboard.layout.datatable-plugins"); !!}
 
@@ -42,6 +42,8 @@
 <script src="{{ url('/') }}/js/iziToast.min.js"></script>
 <script src="{{ url('/') }}/js/sweetalert.min.js"></script> 
 <script src="{{ url('/') }}/js/formajax.js"></script> 
+<script src="{{ url('/') }}/js/bootstrap-datetimepicker.ar.js"></script> 
+<script src="{{ url('/') }}/js/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ url('/') }}/js/vue.js"></script> 
 <script src="{{ url('/') }}/js/app.js"></script> 
 

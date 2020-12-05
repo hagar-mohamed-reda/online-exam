@@ -22,13 +22,19 @@ class Exam extends Model
         'start_time',
         'end_time',
         'course_id',
-        'user_id',
+        'doctor_id',
         'minutes',
         'total',
         'question_number',
         'required_password'
     ]; 
 
+    public $appends = ['can_delete'];
+    
+    public function getCanDeleteAttribute() {
+        return StudentExam::where('exam_id', $this->id)->exists() ? false : true;
+    }
+    
     public function course() {
         return $this->belongsTo("App\Course");
     }
@@ -39,5 +45,9 @@ class Exam extends Model
     
     public function examAssign() {
         return $this->hasMany("App\ExamAssign");
+    }
+    
+    public function hasQuestion($question) {
+        return ExamQuestion::where('question_id', $question)->where('exam_id', $this->id)->exists();
     }
 }

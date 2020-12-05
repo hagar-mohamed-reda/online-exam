@@ -9,6 +9,7 @@ use \Illuminate\Support\Facades\Auth;
 use App\helper\Message;
 use App\helper\Helper;
 use App\Exam; 
+use App\Student; 
 use App\Course; 
 use App\ExamQuestion; 
 use App\ExamAssign; 
@@ -31,13 +32,38 @@ class ExamController extends Controller
      * return json data
      */
     public function getData() {
-        $query = Exam::where("user_id", Auth::user()->id);
+        $query = Exam::where("doctor_id", Auth::user()->fid);
         
         return DataTables::eloquent($query)
                         ->addColumn('action', function(Exam $exam) {
                             return view("doctor.exam.action", compact("exam"));
                         })->editColumn('course_id', function(Exam $exam) {
                             return optional($exam->course)->name;
+                        }) 
+                        ->rawColumns(['action'])
+                        ->toJson();
+    } 
+
+    /**
+     * return json data
+     */
+    public function getAssignStudent() {
+        $exam = Exam::find(request()->exam_id);
+        $query = Student::query();
+        
+        if (request()->level_id > 0)
+            $query->where('level_id', request()->level_id);
+        
+        if (request()->department_id > 0)
+            $query->where('department_id', request()->department_id);
+        
+        return DataTables::eloquent($query)
+                        ->addColumn('action', function(Student $student) use($exam) {
+                            return view("doctor.exam.assign_action", compact("student", "exam"));
+                        })->editColumn('level_id', function(Student $student) {
+                            return optional($student->level)->name;
+                        })->editColumn('department_id', function(Student $student) {
+                            return optional($student->department)->name;
                         }) 
                         ->rawColumns(['action'])
                         ->toJson();
@@ -74,11 +100,10 @@ class ExamController extends Controller
     {
         try {
             $data = $request->all();
-            $data["user_id"] = Auth::user()->id;
+            $data["doctor_id"] = Auth::user()->fid;
             $data["name"] = Course::find($request->course_id)->code . "-" . date('Y-m-d') . "-" . $request->name;
              
-            $exam = Exam::create($data); 
-            
+            $exam = Exam::create($data);  
             for($index = 0; $index < count($request->question_id); $index ++) {
                 if ($request->is_selected[$index] == 1) {
                     ExamQuestion::create([
@@ -152,6 +177,20 @@ class ExamController extends Controller
     { 
         try {
             $exam->update($request->all()); 
+            
+            // delete old and add new
+            $exam->questions()->delete();
+            
+            // add new
+            for($index = 0; $index < count($request->question_id); $index ++) {
+                if ($request->is_selected[$index] == 1) {
+                    ExamQuestion::create([
+                        "exam_id" => $exam->id, 
+                        "question_id" => $request->question_id[$index],  
+                    ]);
+                }
+            }
+            
             
             notify(__('edit exam'), __('edit exam') . " " . $exam->name);
             return Message::success(Message::$EDIT);

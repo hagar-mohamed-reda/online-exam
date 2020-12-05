@@ -1,7 +1,7 @@
 @extends("dashboard.layout.app")
 
 @section("title")
-{{ __('add question') }}
+{{ __('edit question') }}
 @endsection 
 
 @section("content")
@@ -11,12 +11,12 @@
     }
 </style>
 <div id="questionCreateContainer" > 
-    <form method="post" class="form" action="{{ url('/') }}/question/store" id="form">   
+    <form method="post" class="form" action="{{ url('/') }}/question/update/{{ $question->id }}" id="form">   
         @csrf
 
         <div class="slide slide-1" style="display: block" >
             <ul class="w3-ul" >
-                <input type="hidden" name="question_type_id" class="question_type_id"  >
+                <input type="hidden" name="question_type_id" class="question_type_id" value="{{ $question->question_type_id }}"  >
                 @foreach(App\QuestionType::all() as $item)
                 <li class="doctor-list-item" style="padding: 0px" >
                     <div class="media  w3-block w3-padding w3-display-container" style="border-radius: 2px;" >
@@ -38,6 +38,7 @@
                                         id="questionType_{{ $item->id }}"  
                                         name="type"  
                                         value="{{ $item->id }}"
+                                        {{ $question->question_type_id == $item->id? 'checked' : '' }}
                                         onchange="$('.question_type_id').val(this.value)"
                                         type="radio"/>
                                     <label 
@@ -63,15 +64,17 @@
                 <tr>
                     <td>{{ __('text') }} *</td>
                     <td>
-                        <textarea name="text" required="" class="form-control" placeholder="{{ __('text') }}"  ></textarea>
+                        <textarea name="text" required="" class="form-control" placeholder="{{ __('text') }}"  >{{ $question->text }}</textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('course') }} *</td>
                     <td>
                         <select class="form-control select2 w3-block" name="course_id" >
-                            @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
-                            <option value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
+                            @foreach(Auth::user()->doctorCourses()->get() as $item)
+                            <option 
+                                {{ $question->course_id == $item->id? 'selected' : '' }}
+                                value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
                             @endforeach
                         </select> 
                     </td>
@@ -80,8 +83,10 @@
                     <td>{{ __('category') }} *</td>
                     <td>
                         <select class="form-control select2 w3-block" name="category_id" >
-                            @foreach(Auth::user()->toDoctor()->categories()->get() as $item)
-                            <option value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
+                            @foreach(Auth::user()->categories()->get() as $item)
+                            <option 
+                                {{ $question->category_id == $item->id? 'selected' : '' }}
+                                value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
                             @endforeach
                         </select> 
                     </td>
@@ -93,9 +98,9 @@
                             <input 
                                 id="questionActive"  
                                 name="active"   
-                                value="1"
                                 onchange="this.checked ? this.value = 1 : this.value = 0"
-                                checked=""
+                                value="{{ $question->active }}"
+                                {{ $question->active? 'checked' : '' }}
                                 type="checkbox"/>
                             <label for="questionActive" class="label-primary"></label>
                         </div>
@@ -108,7 +113,8 @@
                             <input 
                                 id="questionSharied"  
                                 name="is_sharied"   
-                                value="0"
+                                value="{{ $question->is_sharied }}"
+                                {{ $question->is_sharied? 'checked' : '' }}
                                 onchange="this.checked ? this.value = 1 : this.value = 0"
                                 type="checkbox"/>
                             <label for="questionSharied" class="label-primary"></label>
@@ -127,43 +133,34 @@
                         </th>
                     </tr> 
 
+                    @if ($question->question_type_id == 1)
+                    @foreach($question->questionChoices()->get() as $item)
                     <tr class="text-right" v-if="type == 1" >
                         <td>
-                            <input type="text" readonly="" name="choice[]" value="{{ __('true') }}" class="choice form-control" >
+                            <input type="text" readonly="" name="choice[]" value="{{ __($item->text) }}" class="choice form-control" >
                         </td>
                         <td> 
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
-                                    id="choice_1_true"  
+                                    id="choice_{{ $item->id }}_true"  
                                     name="is_answer[]"  
-                                    checked=""
-                                    value="1"
+                                    {{ $item->is_answer? 'checked': '' }} 
+                                    value="{{ $item->is_answer }}"
                                     onchange="this.checked? this.value = 1 : this.value = 0"
-                                    type="radio"/>
-                                <label for="choice_1_true" class="label-primary"></label>
+                                    type="radio" />
+                                <label for="choice_{{ $item->id }}_true" class="label-primary"></label>
                             </div> 
                         </td>
                     </tr>
-                    <tr class="text-right" v-if="type == 1" >
-                        <td>
-                            <input type="text" readonly="" name="choice[]" value="{{ __('false') }}" class="choice form-control" >
-                        </td>
-                        <td> 
-                            <div class="material-switch pull-right w3-margin-top">
-                                <input 
-                                    id="choice_1_false"  
-                                    name="is_answer[]"   
-                                    value="0"
-                                    onchange="this.checked? this.value = 1 : this.value = 0"
-                                    type="radio"/>
-                                <label for="choice_1_false" class="label-primary"></label>
-                            </div> 
-                        </td>
-                    </tr>
+                    @endforeach
+                    @endif
+                     
                     
+                    @if ($question->question_type_id == 3)
+                    @foreach($question->questionChoices()->get() as $item)
                     <tr class="text-right" v-if="type == 3" >
                         <td>
-                            <input type="text" name="choice[]"   class="choice form-control" >
+                            <input type="text" name="choice[]" value="{{ $item->text }}"  class="choice form-control" >
                         </td>
                         <td> 
                             <div class="material-switch pull-right w3-margin-top">
@@ -177,32 +174,40 @@
                             </div> 
                         </td>
                     </tr>
+                    @endforeach
+                    @endif
+                     
                     
-                    <tr class="text-right" v-if="type == 2 || type == 5" v-for="item in multiChoiceNumber" >
+                    @if ($question->question_type_id == 2 || $question->question_type_id == 5)
+                    @foreach($question->questionChoices()->get() as $item)
+                    <tr class="text-right" v-if="type == 2 || type == 5"  >
                         <td>
-                            <input type="text"  name="choice[]"  class="choice form-control" >
+                            <input type="text"  name="choice[]" value="{{ $item->text }}"  class="choice form-control" >
                         </td>
                         <td> 
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
-                                    v-bind:id="'choice_' + item"  
-                                    name="is_answer[]" 
+                                    name="is_answer[]"
                                     class="mulit_choice_answers"
-                                    value="0"
+                                    id="choice_item_{{ $item->id }}"  
+                                    {{ $item->is_answer? 'checked': '' }} 
+                                    value="{{ $item->is_answer }}"
                                     onchange="setAnswer(this)"
-                                    type="radio"/>
-                                <label v-bind:for="'choice_' + item" class="label-primary"></label>
+                                    type="radio" />
+                                <label for="choice_item_{{ $item->id }}" class="label-primary"></label>
                             </div> 
                         </td>
                     </tr>
+                    @endforeach
+                    @endif
+                    
                 </table>
             </div>
 
 
             <br>
             <center> 
-                <button type="submit" class="btn btn-primary btn-flat margin" >{{ __('save question') }}</button> 
-                <button onclick="showSlide(1)" type="button" class="btn btn-success btn-flat margin" >{{ __('previous') }}</button>
+                <button type="submit" class="btn btn-primary btn-flat margin" >{{ __('save question') }}</button>  
             </center>
         </div>
         <br>
@@ -242,8 +247,9 @@
 
 <script>
     var slide1Valid = true;
-    var multiChoiceNumber = null;
-    
+    var multiChoiceNumber = {{ $question->questionChoices()->count() }};
+     
+        
     function setAnswer(input) {
         if (input.checked) {
             $('.mulit_choice_answers').val(0);
@@ -253,8 +259,7 @@
         }
     }
     
-    function setMultiChoiceNumber() {
-        multiChoiceNumber = $("#multiChoiceNumbers").val();
+    function setMultiChoiceNumber() { 
         app.multiChoiceNumber = [];
         for(var i = 0; i < multiChoiceNumber; i ++) {
             app.multiChoiceNumber.push(i + 1);
@@ -320,8 +325,14 @@
         $(".select2").select2();
 
         formAjax(false, function(r){
-            showPage('question/create');
+            showPage('question');
         });
+        
+        
+        @if ($question->question_type_id == 2 || $question->question_type_id == 5)
+            setMultiChoiceNumber();
+        @endif
+        showSlide(2);
 
     });
 </script>

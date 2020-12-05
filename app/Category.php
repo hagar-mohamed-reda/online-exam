@@ -17,6 +17,12 @@ class Category extends Model
     protected $fillable = [
         'name',	'notes', 'doctor_id'
     ]; 
+    
+    public $appends = ['can_delete'];
+    
+    public function getCanDeleteAttribute() {
+        return Question::where('category_id', $this->id)->exists() ? false : true;
+    }
 
     /**
      * build view object this will make view html

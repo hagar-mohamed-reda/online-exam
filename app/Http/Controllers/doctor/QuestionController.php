@@ -29,7 +29,9 @@ class QuestionController extends Controller
      * return json data
      */
     public function getData() {
-        $query = Question::where("user_id", Auth::user()->id);
+        $query = Question::query()
+                ->where("doctor_id", Auth::user()->fid)
+                ->orWhere("is_sharied", '1');
         
         return DataTables::eloquent($query)
                         ->addColumn('action', function(Question $question) {
@@ -78,7 +80,7 @@ class QuestionController extends Controller
     {
         try {
             $data = $request->all();
-            $data["user_id"] = Auth::user()->id;
+            $data["doctor_id"] = Auth::user()->fid;
              
             $question = Question::create($data); 
             
@@ -117,7 +119,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     { 
-        return $question->getViewBuilder()->loadEditView();
+        return view("doctor.question.edit", compact("question"));
     }
 
     /**
@@ -131,6 +133,18 @@ class QuestionController extends Controller
     { 
         try {
             $question->update($request->all()); 
+            
+            // delete old 
+            $question->questionChoices()->delete();
+            
+            // add new 
+            for($index = 0; $index < count($request->choice); $index ++) {
+                QuestionChoice::create([
+                    "question_id" => $question->id, 
+                    "text" => $request->choice[$index], 
+                    "is_answer" => $request->is_answer[$index] 
+                ]);
+            }
             
             notify(__('edit question'), __('edit question') . " " . $question->name);
             return Message::success(Message::$EDIT);

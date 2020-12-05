@@ -20,6 +20,7 @@
         <ul class="sidebar-menu font" data-widget="tree">
             <li class="header text-uppercase">{{ __('main navigation') }}</li>
             
+            @if (Auth::user()->type == 'admin')
              
             <li class="treeview font w3-text-amber" onclick="showPage('main')" >
                 <a href="#">
@@ -68,6 +69,51 @@
                     <i class="fa fa-desktop"></i> <span>{{ __('exams room') }}</span> 
                 </a>
             </li>  
+            @elseif (Auth::user()->type == 'doctor')
+             
+            <li class="treeview font w3-text-amber" onclick="showPage('main')" >
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>{{ __('dashboard') }}</span> 
+                </a>
+            </li>    
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('category')">
+                <a href="#">
+                    <i class="fa fa-address-book-o"></i> <span>{{ __('category') }}</span> 
+                </a>
+            </li>  
+              
+           
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('doctor-course')">
+                <a href="#">
+                    <i class="fa fa-desktop"></i> <span>{{ __('course') }}</span> 
+                </a>
+            </li>  
+            
+             
+            <li class="treeview font w3-text-indigo" onclick="showPage('question')">
+                <a href="#">
+                    <i class="fa fa-comment"></i> <span>{{ __('questions') }}</span> 
+                </a>
+            </li>  
+             
+            <li class="treeview font w3-text-indigo" onclick="showPage('exam')">
+                <a href="#">
+                    <i class="fa fa-comment"></i> <span>{{ __('exams') }}</span> 
+                </a>
+            </li>  
+          
+            @elseif (Auth::user()->type == 'student')
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('student/exam')">
+                <a href="#">
+                    <i class="fa fa-desktop"></i> <span>{{ __('exams room') }}</span> 
+                </a>
+            </li>  
+            @endif
+            
+            
            
              
 <!--            <li class="treeview font w3-text-brown" >

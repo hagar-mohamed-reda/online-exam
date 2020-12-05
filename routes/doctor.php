@@ -32,6 +32,7 @@ Route::get("question/remove/{question}", "doctor\QuestionController@destroy");
 Route::post("question/update/{question}", "doctor\QuestionController@update");
 
 // exam routes
+Route::get("student/assign/data", "doctor\ExamController@getAssignStudent");
 Route::get("exam", "doctor\ExamController@index");
 Route::post("exam/store", "doctor\ExamController@store");
 Route::get("exam/create", "doctor\ExamController@create");
@@ -42,3 +43,16 @@ Route::get("exam/remove/{exam}", "doctor\ExamController@destroy");
 Route::get("exam/assign/{exam}", "doctor\ExamController@assign");
 Route::post("exam/assign/store/{exam}", "doctor\ExamController@assignStudents");
 Route::post("exam/update/{exam}", "doctor\ExamController@update");
+
+
+// doctor-course routes
+Route::get("doctor-course", "doctor\CourseController@index"); 
+Route::get("doctor-course/data", "doctor\CourseController@getData");
+Route::get("doctor-course/show/{course}", "doctor\CourseController@show"); 
+
+
+Route::get('test_course', function(){
+    $course = App\Course::find(105);
+    
+    dump($course->studentCourses()->get());
+});

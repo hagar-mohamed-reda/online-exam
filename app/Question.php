@@ -15,8 +15,9 @@ class Question extends Model
     protected $fillable = [
         'text',
         'question_type_id',
+        'category_id',
         'course_id',	
-        'user_id',
+        'doctor_id',
         'default_grade',
         'is_sharied',
         'active',
@@ -25,6 +26,11 @@ class Question extends Model
         'photo'
     ]; 
     
+    public $appends = ['can_delete'];
+    
+    public function getCanDeleteAttribute() {
+        return ExamQuestion::where('question_id', $this->id)->exists() ? false : true;
+    }
     
     public function course() {
         return $this->belongsTo("App\Course");

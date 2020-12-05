@@ -131,13 +131,28 @@ function remove(text, url, div, action) {
 }
 
 
+
 function showPage(url) {
+    var r = '<br><br><br><br><div class="text-center w3-xlarge w3-text-indigo shadow w3-white w3-round w3-padding w3-center" style="max-width: 200px!important;margin: auto" ><i class="fa fa-spin fa-spinner w3-margin" ></i> <br> loading !!</div>';
+    $(".frame").html(r);
     $.get(url, function (response) {
         $(".frame").html(response);
     });
 }
 
+
 function edit(route, modal, place) {
+    var r = '<br><br><br><br><div class="text-center w3-xlarge w3-text-indigo shadow w3-white w3-round w3-padding w3-center" style="max-width: 200px!important;margin: auto"  ><i class="fa fa-spin fa-spinner w3-margin" ></i> <br> loading !!</div>';
+        if (modal) { 
+            $("." + place).html(r);
+            //
+            $('#' + modal).modal('show');
+        } else {
+            $(".editModalPlace").html(r);
+            //
+            $('#editModal').modal('show');
+        }
+        
     $.get(route, function (r) {
         if (modal) { 
             $("." + place).html(r);

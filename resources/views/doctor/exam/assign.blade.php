@@ -22,29 +22,28 @@
         <table class="table table-bordered" >
             <tr>
                 <td colspan="2" >
-                    <div class="w3-row" >
-                        <div class="w3-col l4 m4 s12 w3-padding" >
-                            <input onkeyup="search(this.value, null, null)" type="search" id="searchInput" class="form-control" placeholder="{{ __('search') }}"  >
-                        </div>
-                        <div class="w3-col l3 m3 s12 w3-padding" > 
-                            <select class="form-control" id="level" onchange="search(null, this.value, null)" >
-                                @foreach(App\Student::levels() as $item)
-                                <option value="{{ $item }}" >{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="w3-col l3 m3 s12 w3-padding" > 
-                            <select class="form-control" id="section" onchange="search(null, null, this.value)" >
-                                @foreach(App\Student::sections() as $item)
-                                <option value="{{ $item }}" >{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="w3-row" > 
                         <div class="w3-col l2 m2 s12 w3-padding" >  
-                            <button class="btn btn-success" type="button" onclick="search(null, null, null)" >{{ __('show all') }}</button>
+                            <button class="btn btn-success" type="button" onclick="filter()" >{{ __('search') }}</button>
+                        </div>
+                        <div class="w3-col l3 m3 s12 w3-padding " v-model="search.department_id"  > 
+                            <label>{{ __('department') }}</label>
+                            <select class="form-control" id="section"   >
+                                @foreach(App\Department::all() as $item)
+                                <option value="{{ $item->id }}" v-if="search.level_id == '{{ $item->level_id }}'" >{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w3-col l3 m3 s12 w3-padding" > 
+                            <label>{{ __('level') }}</label>
+                            <select class="form-control" id="level" v-model="search.level_id"   >
+                                @foreach(App\Level::all() as $item)
+                                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    
+
                 </td>
             </tr>
             <tr>
@@ -54,39 +53,30 @@
             <tr>
                 <th class="text-right" >{{ __('select all') }}</th>
                 <th class="text-right" > 
-            <div class="material-switch pull-right w3-margin-top">
-                <input 
-                    id="selectAll"    
-                    type="checkbox"/>
-                <label for="selectAll" onclick="selectAll()"  class="question-label label-primary"></label>
-            </div>
-            </th>
+                    <div class="material-switch pull-right w3-margin-top">
+                        <input 
+                            id="selectAll"    
+                            type="checkbox"/>
+                        <label for="selectAll" onclick="selectAll()"  class="question-label label-primary"></label>
+                    </div>
+                </th>
             </tr>
 
-            @foreach(App\Student::all() as $item)
-            <tr 
-                data-level="{{ $item->level }}"
-                data-section="{{ $item->section }}"
-                data-search="{{ $item->name }}-{{ $item->phone }}-{{ optional($item->department)->name }}"
-                class="student-row"  >
-                <td> 
-                    {{ $item->name }}
-                    <input type="hidden" name="student_id[]" value="{{ $item->id }}"  >
-                </td>
-                <td> 
-                    <div class="material-switch pull-right ">
-                        <input 
-                            id="studentSwitch{{ $item->id }}" 
-                            {{ $item->hasExam($exam->id)? 'checked' : '' }}
-                        value="{{$item->hasExam($exam->id)? '1' : '0' }}"
-                        name="assign[]"  
-                        onchange="this.checked? this.value = 1 : this.value = 0"
-                        type="checkbox"/>
-                        <label for="studentSwitch{{ $item->id }}" class="label-primary student-label"></label>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
+
+        </table>
+
+        <table class="table table-bordered" id="studentAssignExam" >
+            <thead>
+                <tr>
+                    <th>{{ __('code') }}</th>
+                    <th>{{ __('name') }}</th>
+                    <th>{{ __('level') }}</th>
+                    <th>{{ __('department') }}</th> 
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>  
+            </tbody>
         </table>
 
         <br>
@@ -105,11 +95,11 @@
 
 <script>
 
+    var table = null;
+
     function selectAll() {
-        $('.student-row').each(function () {
-            if ($(this).css("display") != "none") {
-                $(this).find(".student-label").click();
-            }
+        $('.student-assign-switch').each(function () {
+            $(this).find(".student-label").click();
         });
     }
 
@@ -121,28 +111,50 @@
                     $(this).show();
                 }
             });
-        }
-        else if (level) {
+        } else if (level) {
             $(".student-row").hide();
             $(".student-row[data-level=" + level + "]").show();
-        }
-        else if (section) {
+        } else if (section) {
             $(".student-row").hide();
             $(".student-row[data-section=" + section + "]").show();
-        }
-        else {
+        } else {
             $(".student-row").show();
-        } 
+        }
     }
+
+    function filter() {
+        var url = "{{ url('/student/assign/data') }}?exam_id={{ $exam->id }}&";
+        url += $.param(app.search);
+        table.ajax.url(url);
+        table.ajax.reload();
+    }
+
     var app = new Vue({
         el: '#questionCreateContainer',
         data: {
+            search: {}
         },
         methods: {
         }
     });
 
     $(document).ready(function () {
+
+        table = $('#studentAssignExam').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "pageLength": 5,
+            "ajax": "{{ url('/student/assign/data') }}?exam_id={{ $exam->id }}",
+            "columns": [
+                {"data": "code"},
+                {"data": "name"},
+                {"data": "level_id"},
+                {"data": "department_id"},
+                {"data": "action"}
+            ]
+        });
+
+
         $(".floatbtn-place").remove();
         $(".select2").select2();
 

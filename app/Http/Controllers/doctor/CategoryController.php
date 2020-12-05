@@ -28,7 +28,8 @@ class CategoryController extends Controller
      * return json data
      */
     public function getData() {
-        return DataTables::eloquent(Auth::user()->categories())
+        $query = Category::where('doctor_id', Auth::user()->fid);
+        return DataTables::eloquent($query)
                         ->addColumn('action', function(Category $category) {
                             return view("doctor.category.action", compact("category"));
                         }) 
@@ -57,7 +58,7 @@ class CategoryController extends Controller
     {
         try {
             $data = $request->all();
-            $data["doctor_id"] = Auth::user()->id;
+            $data["doctor_id"] = Auth::user()->fid;
              
             $category = Category::create($data); 
             
@@ -118,6 +119,9 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     { 
         try { 
+            if (!$category->can_delete)
+                return Message::error("cant delete this category");
+            
             notify(__('remove category'), __('remove category') . " " . $category->name);
             $category->delete();
             return Message::success(Message::$DONE);

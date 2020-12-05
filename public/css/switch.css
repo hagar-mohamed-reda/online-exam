@@ -9,7 +9,7 @@
 */
 
 
-/* switch  */
+/* switch 
     input[type=checkbox]{
         height: 0;
         width: 0;
@@ -51,5 +51,5 @@
 
     label:active:after {
         width: 100px;
-    }
+    } */
  

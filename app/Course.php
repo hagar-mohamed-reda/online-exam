@@ -73,6 +73,15 @@ class Course extends Model
     public function courseDepartments() {
         return $this->hasMany("App\CourseDepartment");
     }
+    
+    /**
+     * return all department of course
+     * 
+     * @return type
+     */
+    public function studentCourses() {
+        return $this->hasMany("App\StudentCourse");
+    }
          
     /**
      * return all departments 
