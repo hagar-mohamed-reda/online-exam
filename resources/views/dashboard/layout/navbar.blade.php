@@ -19,14 +19,14 @@
         
         <ul class="sidebar-menu font" data-widget="tree">
             <li class="header text-uppercase">{{ __('main navigation') }}</li>
-            
-            @if (Auth::user()->type == 'admin')
              
-            <li class="treeview font w3-text-amber" onclick="showPage('main')" >
+            <li class="treeview font w3-text-amber" onclick="showPage('dashboard/main')" >
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>{{ __('dashboard') }}</span> 
                 </a>
             </li>    
+            
+            @if (Auth::user()->type == 'admin')
               
             <li class="treeview font w3-text-indigo" onclick="showPage('category')">
                 <a href="#">
@@ -40,17 +40,32 @@
                 </a>
             </li>  
               
+            <li class="treeview font w3-text-indigo" onclick="showPage('dashboard/doctor')">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>{{ __('doctors') }}</span> 
+                </a>
+            </li>  
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('dashboard/student')">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>{{ __('students') }}</span> 
+                </a>
+            </li>  
+              
             <li class="treeview font w3-text-indigo" onclick="showPage('course')">
                 <a href="#">
                     <i class="fa fa-desktop"></i> <span>{{ __('course') }}</span> 
                 </a>
             </li>  
               
+            <!--
             <li class="treeview font w3-text-indigo" onclick="showPage('user')">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>{{ __('users') }}</span> 
                 </a>
             </li>  
+            
+            -->
              
             <li class="treeview font w3-text-indigo" onclick="showPage('question')">
                 <a href="#">
@@ -63,19 +78,14 @@
                     <i class="fa fa-comment"></i> <span>{{ __('exams') }}</span> 
                 </a>
             </li>  
-            
-            <li class="treeview font w3-text-indigo" onclick="showPage('student/exam')">
+             
+            <li class="treeview font w3-text-indigo" onclick="showPage('student-exam')">
                 <a href="#">
-                    <i class="fa fa-desktop"></i> <span>{{ __('exams room') }}</span> 
+                    <i class="fa fa-newspaper-o"></i> <span>{{ __('student exams') }}</span> 
                 </a>
             </li>  
-            @elseif (Auth::user()->type == 'doctor')
              
-            <li class="treeview font w3-text-amber" onclick="showPage('main')" >
-                <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>{{ __('dashboard') }}</span> 
-                </a>
-            </li>    
+            @elseif (Auth::user()->type == 'doctor')   
               
             <li class="treeview font w3-text-indigo" onclick="showPage('category')">
                 <a href="#">
@@ -103,6 +113,12 @@
                     <i class="fa fa-comment"></i> <span>{{ __('exams') }}</span> 
                 </a>
             </li>  
+            
+            <li class="treeview font w3-text-indigo" onclick="showPage('student-exam')">
+                <a href="#">
+                    <i class="fa fa-desktop"></i> <span>{{ __('student exams') }}</span> 
+                </a>
+            </li>   
           
             @elseif (Auth::user()->type == 'student')
               
@@ -111,6 +127,13 @@
                     <i class="fa fa-desktop"></i> <span>{{ __('exams room') }}</span> 
                 </a>
             </li>  
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('student/myexam')">
+                <a href="#">
+                    <i class="fa fa-newspaper-o"></i> <span>{{ __('my exams') }}</span> 
+                </a>
+            </li>  
+            
             @endif
             
             

@@ -27,9 +27,16 @@ class CourseController extends Controller
      * return json data
      */
     public function getData() {
+        $query = null;
+        if (Auth::user()->type == 'admin')
+            $query = Course::query();
+        else {
         $doctor = Auth::user()->toDoctor();
         $ids = DoctorCourse::where('doctor_id', optional($doctor)->id)->pluck('course_id')->toArray();
         $query = Course::whereIn('id', $ids);
+        }
+        
+        
         
         return DataTables::eloquent($query)
                         ->addColumn('action', function(Course $course) {

@@ -41,4 +41,13 @@ class DashboardController extends Controller
     public function main() { 
         return view("dashboard.main");
     }
+
+    
+    /**
+     * main page in dashboard
+     * @return type
+     */
+    public function profile() { 
+        return view("admin.user.profile");
+    }
 }

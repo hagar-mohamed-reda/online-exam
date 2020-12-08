@@ -12,9 +12,12 @@ use App\Exam;
 use App\Student; 
 use App\Course; 
 use App\ExamQuestion; 
+use App\StudentCourse;
+use App\DoctorCourse;
 use App\ExamAssign; 
 use DB;
 use DataTables;
+
 
 class ExamController extends Controller
 {
@@ -32,13 +35,23 @@ class ExamController extends Controller
      * return json data
      */
     public function getData() {
+        $query = null;
+        
+        if (Auth::user()->type == 'admin')
+            $query = Exam::query();
+        else
         $query = Exam::where("doctor_id", Auth::user()->fid);
         
-        return DataTables::eloquent($query)
+        
+        return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Exam $exam) {
                             return view("doctor.exam.action", compact("exam"));
-                        })->editColumn('course_id', function(Exam $exam) {
+                        })
+                        ->editColumn('course_id', function(Exam $exam) {
                             return optional($exam->course)->name;
+                        }) 
+                        ->editColumn('doctor_id', function(Exam $exam) {
+                            return optional($exam->doctor)->name;
                         }) 
                         ->rawColumns(['action'])
                         ->toJson();
@@ -48,8 +61,13 @@ class ExamController extends Controller
      * return json data
      */
     public function getAssignStudent() {
+        $doctor = Auth::user()->toDoctor();
+        $courseIds = DoctorCourse::where('doctor_id', optional($doctor)->id)->pluck('course_id')->toArray();
+        $studentIds = StudentCourse::whereIn('course_id', $courseIds)->pluck('student_id')->toArray();
+        
+        
         $exam = Exam::find(request()->exam_id);
-        $query = Student::query();
+        $query = Student::whereIn('id', $studentIds);
         
         if (request()->level_id > 0)
             $query->where('level_id', request()->level_id);
@@ -57,7 +75,7 @@ class ExamController extends Controller
         if (request()->department_id > 0)
             $query->where('department_id', request()->department_id);
         
-        return DataTables::eloquent($query)
+        return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Student $student) use($exam) {
                             return view("doctor.exam.assign_action", compact("student", "exam"));
                         })->editColumn('level_id', function(Student $student) {
@@ -101,7 +119,7 @@ class ExamController extends Controller
         try {
             $data = $request->all();
             $data["doctor_id"] = Auth::user()->fid;
-            $data["name"] = Course::find($request->course_id)->code . "-" . date('Y-m-d') . "-" . $request->name;
+            //$data["name"] = Course::find($request->course_id)->code . "-" . date('Y-m-d') . "-" . $request->name;
              
             $exam = Exam::create($data);  
             for($index = 0; $index < count($request->question_id); $index ++) {
@@ -120,6 +138,7 @@ class ExamController extends Controller
             return Message::error(Message::$ERROR);
         }
     }
+    
     
     
     public function assignStudents(Exam $exam, Request $request) {

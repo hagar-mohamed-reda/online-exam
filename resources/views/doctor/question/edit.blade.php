@@ -73,8 +73,8 @@
                         <select class="form-control select2 w3-block" name="course_id" >
                             @foreach(Auth::user()->doctorCourses()->get() as $item)
                             <option 
-                                {{ $question->course_id == $item->id? 'selected' : '' }}
-                                value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
+                                {{ $question->course_id == $item->course_id? 'selected' : '' }}
+                                value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>
                             @endforeach
                         </select> 
                     </td>

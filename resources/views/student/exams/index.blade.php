@@ -26,20 +26,6 @@
 @endsection
 
 @section("additional")
-<!-- add modal --> 
-<div class="modal fade" tabindex="-1" role="dialog" id="addModal" style="width: 100%!important;height: 100%!important" >
-    <div class="modal-dialog modal-sm" role="document" >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <center class="modal-title w3-xlarge">{{ __('add category') }}</center>
-      </div>
-      <div class="modal-body"> 
-      </div> 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal --> 
-
  
 @endsection
 
@@ -51,20 +37,21 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "pageLength": 5, 
-        "ajax": "{{ url('/student/exam/data') }}",
+        "ajax": "{{ url('/exam-room/data') }}",
         "columns":[ 
             { "data": "name" },    
             { "data": "start_time" },    
             { "data": "end_time" },    
-            { "data": "course_id" },    
-            { "data": "minutes" },    
-            { "data": "total" },    
+            { "data": "course_id" },   
             { "data": "question_number" },    
+            { "data": "minutes" },    
+            { "data": "total" },     
             { "data": "action" }
         ]
      });
      
      formAjax(); 
+        $('.floatbtn-place').remove();
         
 }); 
 </script>

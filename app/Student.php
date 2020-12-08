@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\helper\ViewBuilder;
 
 class Student extends Model
 {
@@ -70,18 +71,22 @@ class Student extends Model
                 ->toArray();
     }
     
+    public function toStudent() {
+        return $this;
+    }
+    
     /**
      * get all available exams of student
      * 
      * return Exam
      */
-    public static function exams($student) {
+    public function exams() {
         $currentTime = date("Y-m-d H:i:s");
         
-        $exams = Exam::join("exam_assigns", "exams.id", "=", "exam_id")
-                ->where("student_id", "=", $student)
+        $exams = Exam::join("exam_exam_assigns", "exam_exams.id", "=", "exam_id") 
+                ->where("student_id", "=", $this->id)
                 ->where("start_time", "<=", $currentTime)
-                ->where("end_time", ">", $currentTime);
+                ->where("end_time", ">=", $currentTime);
         
         return $exams;
     }
@@ -89,6 +94,10 @@ class Student extends Model
     
     public function department() {
         return $this->belongsTo("App\Department");
+    }
+    
+    public function studentExams() {
+        return $this->hasMany("App\StudentExam", 'student_id');
     }
 
     public function level() {
@@ -113,5 +122,45 @@ class Student extends Model
         
         return false;
     }
-    
+ 
+    /**
+     * build view object this will make view html
+     *
+     * @return ViewBuilder
+     */
+    public function getViewBuilder() {
+        $builder = new ViewBuilder($this, "rtl");
+
+        $levels = [];
+
+        foreach(Level::all() as $item)
+            $levels[] = [$item->id, $item->name];
+
+        $departments = [];
+
+        foreach(Department::all() as $item)
+            $departments[] = [$item->id, $item->name . "-" . optional($item->level)->name];
+
+        $builder->setAddRoute(url('/dashboard/student/store'))
+                ->setEditRoute(url('/dashboard/student/update') . "/" . $this->id)
+                //->setCol(["name" => "id", "label" => __('id'), "editable" => false])
+                ->setCol(["name" => "code", "label" => __('code')])
+                ->setCol(["name" => "name", "label" => __('name')])
+                ->setCol(["name" => "national_id", "label" => __('national_id'), "required" => false])
+                ->setCol(["name" => "set_number", "label" => __('set_number'), "required" => false])
+                ->setCol(["name" => "phone", "label" => __('phone'), "required" => false])
+                ->setCol(["name" => "password", "label" => __('password'), "type" => "password", "required" => false])
+                ->setCol(["name" => "active", "label" => __('active'), "type" => "checkbox"])
+                ->setCol(["name" => "level_id", "label" => __('level'), "type" => "select", "data" => $levels, "col" => 'col-lg-12 col-md-12 col-sm-12'])
+                ->setCol(["name" => "department_id", "label" => __('department'), "type" => "select", "data" => $departments, "col" => 'col-lg-12 col-md-12 col-sm-12'])
+
+                //->setCol(["name" => "sms_code", "label" => __('sms_code'), "editable" => false])
+                ->setCol(["name" => "account_confirm", "label" => __('confirm_account'), "editable" => false])
+                ->setCol(["name" => "graduated", "label" => __('graduated'), "editable" => false])
+                ->setCol(["name" => "can_see_result", "label" => __('can_see_result'), 'type' => 'checkbox'])
+                ->setUrl(url('/image/students'))
+                ->build();
+
+        return $builder;
+    }
 }

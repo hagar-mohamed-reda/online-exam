@@ -23,6 +23,10 @@ class Category extends Model
     public function getCanDeleteAttribute() {
         return Question::where('category_id', $this->id)->exists() ? false : true;
     }
+    
+    public function doctor() {
+        return $this->belongsTo("App\Doctor");
+    }
 
     /**
      * build view object this will make view html

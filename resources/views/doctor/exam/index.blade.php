@@ -18,7 +18,10 @@
             <th>{{ __('course') }}</th>   
             <th>{{ __('minutes') }}</th>   
             <th>{{ __('total') }}</th>   
-            <th>{{ __('question_number') }}</th>    
+            <th>{{ __('question_number') }}</th>     
+            @if (Auth::user()->type == 'admin')
+            <th>{{ __('doctor') }}</th>     
+	    @endif
             <th></th>
         </tr>
     </thead> 
@@ -64,7 +67,10 @@ $(document).ready(function() {
             { "data": "course_id" },   
             { "data": "minutes" },   
             { "data": "total" },   
-            { "data": "question_number" },    
+            { "data": "question_number" },   
+            @if (Auth::user()->type == 'admin')
+            { "data": "doctor_id" },   
+	    @endif 
             { "data": "action" }
         ]
      });
@@ -75,6 +81,9 @@ $(document).ready(function() {
          showPage('exam/create');
      });
         
+            @if (Auth::user()->type == 'admin')
+		$('.floatbtn-place').remove();
+	    @endif
 }); 
 </script>
 @endsection

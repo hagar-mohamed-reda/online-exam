@@ -7,11 +7,11 @@ use Illuminate\Notifications\Notifiable;
 use \Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\helper\ViewBuilder;
+use DB;
 
 class User  extends Authenticatable
 {
-    use SoftDeletes; 
-    use Notifiable;
+    use SoftDeletes;  
     
     /**
      * user enum of roles
@@ -98,6 +98,24 @@ class User  extends Authenticatable
     }
     
     /**
+     * return questions of the user
+     * 
+     * @return Question
+     */
+    public function notifications() {
+        return Notification::where('user_id', $this->id);
+    }
+    
+    /**
+     * return questions of the user
+     * 
+     * @return Question
+     */
+    public function loginHistories() {
+        return DB::table('login_histories')->where('user_id', $this->id);
+    }
+    
+    /**
      * return categories of the user
      * 
      * @return Category
@@ -121,6 +139,9 @@ class User  extends Authenticatable
         return false;
     }
      
+    public function _can($p) {
+        return true;
+    }
       
 
     /**

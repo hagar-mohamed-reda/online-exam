@@ -54,4 +54,6 @@
     $(".btn-float, .sidebar-menu li").mouseup(function(){
         playSound("click4");
     });
+    
+    $('.select2').css('width', '100%');
 </script>

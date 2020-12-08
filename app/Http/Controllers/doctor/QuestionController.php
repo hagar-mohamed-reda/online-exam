@@ -29,16 +29,29 @@ class QuestionController extends Controller
      * return json data
      */
     public function getData() {
-        $query = Question::query()
+        $query = null;
+        if (Auth::user()->type == 'admin')
+            $query = Question::query();
+        
+        else
+            $query = Question::query()
                 ->where("doctor_id", Auth::user()->fid)
                 ->orWhere("is_sharied", '1');
         
-        return DataTables::eloquent($query)
+        
+        return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Question $question) {
                             return view("doctor.question.action", compact("question"));
                         })->editColumn('course_id', function(Question $question) {
                             return optional($question->course)->name;
-                        })->editColumn('question_type_id', function(Question $question) {
+                        })
+                        ->editColumn('category_id', function(Question $question) {
+                            return __(optional($question->category)->name);
+                        })
+                        ->editColumn('doctor_id', function(Question $question) {
+                            return __(optional($question->doctor)->name);
+                        })
+                        ->editColumn('question_type_id', function(Question $question) {
                             return __(optional($question->questionType)->name);
                         })->editColumn('text', function(Question $question) {
                             return substr($question->text, 0, 100) . "..";
@@ -69,6 +82,16 @@ class QuestionController extends Controller
     { 
         return view("doctor.question.add");
     }
+    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create2()
+    { 
+        return view("doctor.question.add2");
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -94,6 +117,45 @@ class QuestionController extends Controller
             
             
             notify(__('add question'), __('add question') . " " . $question->name); 
+            return Message::success(Message::$DONE);
+        } catch (Exception $ex) {
+            return Message::error(Message::$ERROR);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store2(Request $request)
+    {
+        try { 
+            $counter = 0;
+            $data = json_decode($request->data, true); 
+            foreach($data['questions'] as $row) {
+                $counter = 0;
+                $q = Question::create([
+                    "text" => $row['text'],
+                    "question_type_id" => $data['type_id'],
+                    "course_id" => $data['course_id'],
+                    "category_id" => $data['category_id'],
+                    "doctor_id" =>  Auth::user()->fid,
+                    "active" =>  1,
+                ]);
+                
+                foreach($row['choices'] as $choice) {
+                    QuestionChoice::create([
+                        "question_id" => $q->id, 
+                        "text" => $choice, 
+                        "is_answer" => $row['answers'][$counter]
+                    ]);
+                    $counter ++;
+                }
+            }
+             
+            notify(__('add question'), __('add question') ); 
             return Message::success(Message::$DONE);
         } catch (Exception $ex) {
             return Message::error(Message::$ERROR);
@@ -163,6 +225,7 @@ class QuestionController extends Controller
     { 
         try { 
             notify(__('remove question'), __('remove question') . " " . $question->name);
+            $question->questionChoices()->delete();
             $question->delete();
             return Message::success(Message::$DONE);
         } catch (\Exception $ex) {

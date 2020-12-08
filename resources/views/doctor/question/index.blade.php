@@ -7,6 +7,13 @@
 @endphp  
 
 @section("content")
+<div>
+    @if (Auth::user()->type == 'doctor')
+    <button class="btn btn-primary" onclick="showPage('question/create2')" >{{ __('add multi questions') }}</button>
+    @endif
+</div>
+<br>
+
 <table class="table table-bordered" id="table" >
     <thead>
         <tr> 
@@ -14,7 +21,11 @@
             <th>{{ __('course') }}</th>   
             <th>{{ __('type') }}</th>   
             <th>{{ __('active') }}</th>   
-            <th>{{ __('is_sharied') }}</th>   
+            <th>{{ __('category') }}</th>   
+            <th>{{ __('is_sharied') }}</th>
+    @if (Auth::user()->type == 'admin')    
+            <th>{{ __('doctor') }}</th> 
+            @endif
             <th></th>
         </tr>
     </thead> 
@@ -64,14 +75,18 @@ $(document).ready(function() {
      $('#table').DataTable({
         "processing": true,
         "serverSide": true,
-        "pageLength": 5,
+        "pageLength": 10,
         "ajax": "{{ url('/question/data') }}",
         "columns":[ 
             { "data": "text" },   
             { "data": "course_id" },   
             { "data": "question_type_id" },   
             { "data": "active" },   
+            { "data": "category_id" },   
             { "data": "is_sharied" },   
+    @if (Auth::user()->type == 'admin') 
+            { "data": "doctor_id" },  
+            @endif
             { "data": "action" }
         ]
      });

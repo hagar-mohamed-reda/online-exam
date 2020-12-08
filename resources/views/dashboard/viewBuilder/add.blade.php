@@ -12,7 +12,7 @@
         direction: rtl;
     }
 </style>
-<form method="post" class="form" action="{{ $builder['add_route'] }}" id="form" >   
+<form method="post" class="form" action="{{ $builder['add_route'] }}" id="form"   >   
     <div class="box-body row">
         {{ csrf_field() }}
         @foreach($builder["cols"] as $col)
@@ -187,17 +187,15 @@ async defer></script>
         </div>  
         @elseif ($col["type"] == "checkbox")
         <div class="form-group w3-padding {{ $col['col'] == null? 'col-lg-4 col-md-4 col-sm-6 col-xs-12' : $col['col'] }}">
-            <div class="" > 
-                <label for="">{{ $col['label'] }} *</label> 
-                <input type="hidden" name="{{ $col['name'] }}" id="input-{{ $col['id'] }}" value="1" >
-                <input 
-                    type="checkbox" 
-                    class="shadow" 
-                    id="{{ $col['id'] }}" 
-                    placeholder="{{ $col['placeholder'] }}" 
-                    onchange="this.checked? $('#input-{{ $col['id'] }}').val(1) : $('#input-{{ $col['id'] }}').val(0)"
-                    checked="" >
-                <label for="{{ $col['id'] }}" class="switch {{ $col['class'] }}"  >{{ $col['label'] }}</label>
+            <label for="">{{ $col['label'] }}</label>
+            <br>
+            <input type="hidden" name="{{ $col['name'] }}" id="input-{{ $col['id'] }}" value="1" >
+            <div class="material-switch pull-right">
+                <input id="{{ $col['id'] }}"   
+                       type="checkbox" 
+                       onchange="this.checked? $('#input-{{ $col['id'] }}').val(1) : $('#input-{{ $col['id'] }}').val(0)"
+                    checked=""/>
+                <label for="{{ $col['id'] }}" class="label-primary {{ $col['class'] }}"></label>
             </div> 
         </div>  
         @elseif ($col["type"] == "textarea")
@@ -222,7 +220,7 @@ async defer></script>
                 placeholder="{{ $col['placeholder'] }}">
         </div> 
         @else 
-        <div class="form-group w3-padding {{ $col['col'] == null? 'col-lg-4 col-md-4 col-sm-6 col-xs-12' : $col['col'] }} ">
+        <div class="input-append date form-group w3-padding {{ $col['col'] == null? 'col-lg-4 col-md-4 col-sm-6 col-xs-12' : $col['col'] }} ">
             <label for="{{ $col['id'] }}">{{ $col['label'] }}</label>
             <input 
                 {{ $col["required"]? "required" : '' }}
@@ -243,7 +241,15 @@ async defer></script>
     <br>
     <br>
     <div class="box-footer">
-        <button type="button" class="btn bg-gray btn-flat margin shadow" data-dismiss="modal">اغلاق</button>
-        <button type="submit" class="btn bg-purple btn-flat margin shadow">حفظ</button>
+        <button type="button" class="btn btn-default btn-flat margin" data-dismiss="modal">اغلاق</button>
+        <button type="submit" class="btn btn-primary btn-flat margin" onclick="$(this).parent().parent().find('input[type=file]').attr('required')? error('{{ __("upload file") }}') : ''" >حفظ</button>
     </div>  
 </form> 
+
+<script>
+//Date picker
+    $('input[type=datetime]').attr("data-date-format", "yyyy-mm-dd hh:ii:ss");
+    $('input[type=datetime]').datetimepicker({
+      autoclose: true
+    })
+</script>

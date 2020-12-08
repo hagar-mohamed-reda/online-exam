@@ -1,24 +1,31 @@
-<div class="w3-block w3-display-container" >
-    <div class="w3-large" > 
+
+@php 
+    $col = intval(12 / $question->questionChoices()->count());
+    
+@endphp
+<div class="w3-block w3-display-container question-div" style="padding-bottom: 5px" >
+    <div class="w3- " > 
         {{ $counter }} )
         {{ $question->text }}
-        <input type="hidden" name="question_id[]" value="{{ $question->id }}" >
-        <input type="hidden" name="answer_id[]" value="{{ $question->id }}" id="questionChoiceNumber{{ $question->id }}" >
+        <input type="hidden" name="question_id[]" class="question_id" value="{{ $question->id }}" >
+        <input type="hidden" name="answer_id[]" class="answer_id"  id="questionChoiceNumber{{ $question->id }}" >
     </div> 
     <div  >
-        <table class='w3-table' >
-            <tr>
-                @foreach($question->questionChoices()->get() as $item)
-                <td>
-                    {{ $item->text }}  
-                    <input type="radio" 
-                           value="{{ $item->id }}" 
-                           name="checked-number-{{ $question->id }}" 
-                           class="w3-check" 
-                           onclick="$('#questionChoiceNumber{{ $question->id }}').val(this.value)"  >
-                </td> 
-                @endforeach
-            </tr> 
-        </table>
+        <div class="row" >
+            @foreach($question->questionChoices()->get() as $item)
+            <div class="col-lg-{{ $col }} col-md-{{ $col }} col-sm-12" >
+                <input type="radio" 
+                       value="{{ $item->text }}" 
+                       name="checked-number-{{ $question->id }}" 
+                       @if (isset($showAnswer) && isset($studentExam))
+                       {{ $item->isAnswerForStudentExam($studentExam)? 'checked' : '' }}
+                       {{ 'disabled' }}
+                       @endif 
+                       class="w3-check" 
+                       onclick="$('#questionChoiceNumber{{ $question->id }}').val(this.value)"  >
+                {{ $item->text }}  
+            </div>
+            @endforeach
+        </div> 
     </div>
 </div>

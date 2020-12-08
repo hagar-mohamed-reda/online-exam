@@ -14,7 +14,11 @@
             @foreach($builder->cols as $col)
             <th>{{ $col['label'] }}</th>  
             @endforeach
+            @if (Auth::user()->type == 'admin')
+            <th>{{ __('doctor') }}</th>
+            @endif
             <th></th>
+            
         </tr>
     </thead> 
     <tbody>
@@ -70,12 +74,18 @@ $(document).ready(function() {
             @foreach($builder->cols as $col)
             { "data": "{{ $col['name'] }}" },     
             @endforeach
-            { "data": "action" }
+            @if (Auth::user()->type == 'admin')
+            { "data": "doctor_id" },
+            @endif
+            { "data": "action" },
         ]
      });
      
      formAjax(); 
         
+            @if (Auth::user()->type == 'admin')
+		$('.floatbtn-place').remove();
+	    @endif
 }); 
 </script>
 @endsection

@@ -71,7 +71,7 @@
                     <td>
                         <select class="form-control select2 w3-block" name="course_id" >
                             @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
-                            <option value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
+                            <option value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>
                             @endforeach
                         </select> 
                     </td>

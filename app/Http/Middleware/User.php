@@ -15,8 +15,8 @@ class User
      */
     public function handle($request, Closure $next, $role)
     {
-        if (session("user") == null)
-            return redirect("dashboard/login");
+        if (Auth::user() == null)
+            return redirect("/login");
         
         return $next($request);
     }

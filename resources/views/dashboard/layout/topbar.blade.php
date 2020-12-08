@@ -75,6 +75,8 @@
                 <div class="pull-right">
                     <div class="w3-large" >{{ Auth::user()->name }}</div>
                     <br>
+                    <a href="#" onclick="showPage('profile')" class="btn btn-primary w3-round shadow btn-sm ">{{ __('profile') }}</a>
+                    <br>
                     <br>
                     <a href="{{ url('/') }}/logout"  class="btn w3-red w3-round shadow btn-sm ">{{ __('logout') }}</a>
                 </div>

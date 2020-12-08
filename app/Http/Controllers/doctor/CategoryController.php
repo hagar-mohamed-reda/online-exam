@@ -28,10 +28,19 @@ class CategoryController extends Controller
      * return json data
      */
     public function getData() {
-        $query = Category::where('doctor_id', Auth::user()->fid);
-        return DataTables::eloquent($query)
+        $query = null;
+        if (Auth::user()->type == 'admin')
+            $query = Category::query();
+        else
+            $query = Category::where('doctor_id', Auth::user()->fid);
+        
+        
+        return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Category $category) {
                             return view("doctor.category.action", compact("category"));
+                        }) 
+                        ->editColumn('doctor_id', function(Category $category) {
+                            return optional($category->doctor)->name;
                         }) 
                         ->rawColumns(['action'])
                         ->toJson();

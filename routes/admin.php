@@ -11,6 +11,10 @@
   |
  */
 
+// remote post login
+Route::get('/remote', 'dashboard\StudentRemoteLoginController@login')->name('remoteLogin');
+
+
 
 //********************************************
 // dashboard routes
@@ -19,7 +23,6 @@
 Route::group(["middleware" => "admin"], function() {
 
     Route::get("/", "dashboard\DashboardController@index");
-    Route::get("main", "dashboard\DashboardController@main");
 
     // department routes
     Route::get("department", "admin\DepartmentController@index");
@@ -44,17 +47,27 @@ Route::group(["middleware" => "admin"], function() {
     Route::get("notification/data", "dashboard\NotificationController@getData"); 
     Route::get("notification/remove/{notification}", "dashboard\NotificationController@destroy"); 
   
-    // customer routes
-    Route::get("customer", "dashboard\CustomerController@index");
-    Route::post("customer/import", "dashboard\CustomerController@import");
-    Route::post("customer/store", "dashboard\CustomerController@store");
-    Route::get("customer/data", "dashboard\CustomerController@getData");
-    Route::get("customer/edit/{customer}", "dashboard\CustomerController@edit");
-    Route::get("customer/show/{customer}", "dashboard\CustomerController@show");
-    Route::get("customer/sheet/{customer}", "dashboard\CustomerController@sheet");
-    Route::post("customer/sheet/store/{customer}", "dashboard\SheetController@store");
-    Route::get("customer/remove/{customer}", "dashboard\CustomerController@destroy");
-    Route::post("customer/update/{customer}", "dashboard\CustomerController@update");
+    
+    // doctor routes
+    Route::get("dashboard/doctor", "dashboard\DoctorController@index");
+    Route::post("dashboard/doctor/store", "dashboard\DoctorController@store");
+    Route::get("dashboard/doctor/data", "dashboard\DoctorController@getData");
+    Route::get("dashboard/doctor/edit/{doctor}", "dashboard\DoctorController@edit");
+    Route::get("dashboard/doctor/remove/{doctor}", "dashboard\DoctorController@destroy");
+    Route::post("dashboard/doctor/update/{doctor}", "dashboard\DoctorController@update");
+
+    // student routes
+    Route::get("dashboard/student", "dashboard\StudentController@index");
+    Route::post("dashboard/student/store", "dashboard\StudentController@store");
+    Route::get("dashboard/student/data", "dashboard\StudentController@getData");
+    Route::get("dashboard/student/course/data", "dashboard\StudentController@getData2");
+    Route::get("dashboard/student/edit/{student}", "dashboard\StudentController@edit");
+    Route::get("dashboard/student/remove/{student}", "dashboard\StudentController@destroy");
+    Route::post("dashboard/student/update/{student}", "dashboard\StudentController@update");
+    Route::get("dashboard/student/show/{student}", "dashboard\StudentController@show");
+    Route::post("dashboard/student/import", "dashboard\StudentController@import");
+
+    
   
     // role routes
     Route::get("role", "dashboard\RoleController@index");
@@ -82,6 +95,9 @@ Route::group(["middleware" => "admin"], function() {
     // helper route
     Route::get("print/{page}", "dashboard\HelperController@print");
 });
+    // option routes
+    Route::get("profile", "dashboard\DashboardController@profile");
+    Route::get("dashboard/main", "dashboard\DashboardController@main");
 
 // login route
 Route::get("login/", "dashboard\LoginController@index");

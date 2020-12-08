@@ -54,7 +54,7 @@ function success(message, title, img) {
         img = public_path + "/image/reportLogo.png";
 
     if (title == undefined || title.length <= 0)
-        title = "Oillixe";
+            title = TITLE;
 
     playSound("not2");
     var html =
@@ -80,7 +80,7 @@ function error(message, title, img) {
         img = public_path + "/image/reportLogo.png";
 
     if (title == undefined || title.length <= 0)
-        title = "Oillixe";
+        title = TITLE;
 
     playSound("not2");
     var html =

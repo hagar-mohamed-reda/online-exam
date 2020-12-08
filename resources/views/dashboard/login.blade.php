@@ -19,7 +19,7 @@
             <!-- Content Wrapper. Contains page content --> 
             <div class="login-box w3-animate-top " >
                 <div class="login-logo">
-                    <a href="#"><b> MOBILE </a>
+                    <a href="#"><b> {{ optional(DB::table("settings")->find(5))->value }} </a>
                 </div>
                 <!-- /.login-logo -->
                 <div class="login-box-body w3-card">

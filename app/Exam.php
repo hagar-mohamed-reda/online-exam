@@ -38,9 +38,18 @@ class Exam extends Model
     public function course() {
         return $this->belongsTo("App\Course");
     }
+    
+    public function doctor() {
+        return $this->belongsTo("App\Doctor");
+    }
 
     public function questions() {
         return $this->hasMany("App\ExamQuestion");
+    }
+
+    public function examQuestions() {
+        $ids = $this->questions()->pluck('question_id')->toArray();
+        return Question::whereIn('id', $ids);
     }
     
     public function examAssign() {
@@ -49,5 +58,29 @@ class Exam extends Model
     
     public function hasQuestion($question) {
         return ExamQuestion::where('question_id', $question)->where('exam_id', $this->id)->exists();
+    }
+    
+    public function getQuestions() {
+        $ids = $this->questions()->pluck('question_id')->toArray();
+        $selectedIds = $ids;
+        $questionCount = $this->questions()->count(); 
+        
+        if ($this->question_number < $questionCount)
+            $selectedIds = $this->questions() 
+                ->orderByRaw("RAND()")
+                ->take($this->question_number)
+                ->pluck('question_id')
+                ->toArray(); 
+        
+        $questionQuery = Question::whereIn('id', $selectedIds); 
+        $categoryQuery = clone $questionQuery; 
+        $categories = Category::whereIn('id', $categoryQuery->pluck('category_id')->toArray())->get();
+        
+        foreach($categories as $category) {
+            $qq = clone $questionQuery; 
+            $category->questions = $qq->where('category_id', $category->id)->get();
+        }
+        
+        return $categories;
     }
 }

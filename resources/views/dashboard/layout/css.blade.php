@@ -4,7 +4,7 @@
 
 
 <!-- website title -->
-<title>online exam</title>
+<title>{{ optional(DB::table("settings")->find(5))->value }}</title>
 
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -50,7 +50,9 @@
 <link rel="stylesheet" href="{{ url('/') }}/css/bootstrap-switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/iziToast.css">
+<link rel="stylesheet" href="{{ url('/') }}/Bootstrap-RTL-3.3.7.3/3.3.7/bootstrap.rtl.full.min.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/app.css">
+<link rel="shortcut icon" href="{{ url('/') }}/image/logo.png" type="image/png">
  
 <!-- print library -->  
 <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">  
@@ -62,25 +64,23 @@
 <!-- jQuery 3 -->
 <script src="{{ url('/') }}/js/jquery-3.2.1.min.js"></script>
 
+
+
 <!-- commen style -->
 <style>
     *, .font, h1, h2, h3, h4, h5, h6 {
-        /*font-family: 'Cairo', sans-serif;
-        font-family: 'Text Me One', sans-serif*/
-        font-family: consolas;
+        font-family: 'Cairo', sans-serif;
+        /*font-family: 'Text Me One', sans-serif*/ 
     } 
+    
+    body, html {
+        direction: ltr;
+    }
     
     .shadow-1 {
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.14), 0 1px 1px -1px rgba(0,0,0,0.12), 0 1px 2px 0 rgba(0,0,0,0.2)!important;
     }
-
-    .modal, .table { 
-        @if (Lang::getLang() == 'Ar') 
-        direction: rtl;
-        @else
-        direction: ltr;
-        @endif
-    }
+ 
 
     @if (App\Setting::find(1)->value == 'skin-dark-light')
     .treeview a {
@@ -100,11 +100,24 @@
         padding-left: 10px!important;
         padding-right: 10px!important;
     }
+    
+    .select2 {
+        width: 100%!important;
+    }
+    
+    .select2:hover {
+        width: 100%!important;
+    }
+    
+    .pull-right {
+        float: right!important;
+    }
 </style>
 
 <!-- commen script -->
 <script>
     var public_path = '{{ url("/") }}';
+    var TITLE = '{{ optional(DB::table("settings")->find(5))->value }}';
 </script>
 
 <script>
