@@ -107,6 +107,7 @@ class QuestionController extends Controller
              
             $question = Question::create($data); 
             
+            if ($request->choice)
             for($index = 0; $index < count($request->choice); $index ++) {
                 QuestionChoice::create([
                     "question_id" => $question->id, 
