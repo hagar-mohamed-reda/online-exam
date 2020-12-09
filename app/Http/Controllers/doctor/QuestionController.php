@@ -68,7 +68,10 @@ class QuestionController extends Controller
                             
                             return "<span class='label label-$label' >$text</span>";
                         }) 
-                        ->rawColumns(['action', 'active', 'is_sharied'])
+                        ->editColumn('photo', function(Question $question) {
+                            return "<img src='".$question->photo_url."' style='width: 40px' onclick='viewImage(this)' >";
+                        }) 
+                        ->rawColumns(['action', 'active', 'is_sharied', 'photo'])
                         ->toJson();
     } 
     
@@ -106,6 +109,14 @@ class QuestionController extends Controller
             $data["doctor_id"] = Auth::user()->fid;
              
             $question = Question::create($data); 
+            
+            if ($request->hasFile("photo")) {
+                Helper::uploadFile($request->file('photo'), "/question", function($filename) use ($question) {
+                    $question->update([
+                        "photo" => $filename
+                    ]);
+                });
+            }
             
             if ($request->choice)
             for($index = 0; $index < count($request->choice); $index ++) {
@@ -195,7 +206,22 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question)
     { 
         try {
+            $data = $request->all();
+            unset($data['photo']);
+            
             $question->update($request->all()); 
+            
+            // upload image
+            if ($request->hasFile("photo")) {
+                if (file_exists(public_path() . "/file/question/" . $question->photo)) {
+                    unlink(public_path() . "/file/question/" . $question->photo);
+                }
+                Helper::uploadFile($request->file('photo'), "/question", function($filename) use ($question) {
+                    $question->update([
+                        "photo" => $filename
+                    ]);
+                });
+            }
             
             // delete old 
             $question->questionChoices()->delete();

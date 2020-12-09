@@ -26,7 +26,11 @@ class Question extends Model
         'photo'
     ];  
     
-    public $appends = ['can_delete', 'answer', 'answer_choice'];
+    public $appends = ['can_delete', 'answer', 'answer_choice', 'photo_url'];
+    
+    public function getPhotoUrlAttribute() {
+        return url('/file/question') .  "/" . $this->photo;
+    }
     
     public function getCanDeleteAttribute() {
         return ExamQuestion::where('question_id', $this->id)->exists() ? false : true;

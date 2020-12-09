@@ -23,6 +23,7 @@
             <th>{{ __('active') }}</th>   
             <th>{{ __('category') }}</th>   
             <th>{{ __('is_sharied') }}</th>
+            <th>{{ __('photo') }}</th>
     @if (Auth::user()->type == 'admin')    
             <th>{{ __('doctor') }}</th> 
             @endif
@@ -84,6 +85,7 @@ $(document).ready(function() {
             { "data": "active" },   
             { "data": "category_id" },   
             { "data": "is_sharied" },   
+            { "data": "photo" },   
     @if (Auth::user()->type == 'admin') 
             { "data": "doctor_id" },  
             @endif

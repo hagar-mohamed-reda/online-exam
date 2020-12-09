@@ -78,7 +78,7 @@ class Helper {
         return $filename;
     }
 
-    public static function uploadFile($file, $folder = '/', $action) {
+    public static function uploadFile($file, $folder = '/', $action=null) {
         $filename = "";
         if ($file) {
             $extension = $file->getClientOriginalExtension();

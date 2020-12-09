@@ -11,7 +11,7 @@
     }
 </style>
 <div id="questionCreateContainer" > 
-    <form method="post" class="form" action="{{ url('/') }}/question/update/{{ $question->id }}" id="form">   
+    <form method="post" class="form" action="{{ url('/') }}/question/update/{{ $question->id }}" id="form" enctype="multipart/form-data" >   
         @csrf
 
         <div class="slide slide-1" style="display: block" >
@@ -65,6 +65,15 @@
                     <td>{{ __('text') }} *</td>
                     <td>
                         <textarea name="text" required="" class="form-control" placeholder="{{ __('text') }}"  >{{ $question->text }}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ __('image') }} *</td>
+                    <td>
+                        <input type="file" name="photo" class="form-control" onchange="loadImage(this, event)" >
+                        @if ($question->photo)
+                        <img src="{{ $question->photo_url }}" width="40px" >
+                        @endif
                     </td>
                 </tr>
                 <tr>

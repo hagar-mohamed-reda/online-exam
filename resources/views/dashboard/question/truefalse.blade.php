@@ -2,6 +2,10 @@
     <div class="w3- " > 
         {{ $counter }} )
         {{ $question->text }}
+                @if ($question->photo)
+                <br>
+                <center><img src="{{ $question->photo_url }}" style="width: 60%" ></center>
+                @endif
         <input type="hidden" name="question_id[]" class="question_id" value="{{ $question->id }}" >
         <input type="hidden" name="answer_id[]" class="answer_id"  id="questionChoiceNumber{{ $question->id }}" >
     </div>
