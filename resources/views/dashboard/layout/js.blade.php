@@ -46,7 +46,16 @@
 <script src="{{ url('/') }}/js/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ url('/') }}/js/vue.js"></script> 
 <script src="{{ url('/') }}/js/app.js"></script> 
-
+<script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
 <script> 
     showPage('dashboard/main');
     

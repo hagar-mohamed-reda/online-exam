@@ -5,18 +5,18 @@
         {!! view("dashboard.layout.css") !!}
 
     </head>
-    <body class=" hold-transition fixed sidebar-mini {{ App\Setting::find(1)->value }}"  >
+    <body class="layout-top-nav {{ App\Setting::find(1)->value }}"  >
 
         <div id="root" >
             <!-- include topbar html -->
             {!! view("dashboard.layout.topbar") !!}
-
-            <!-- include navbar html -->
-            {!! view("dashboard.layout.navbar") !!}
+ 
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper  "   > 
-                <div class="frame" style="overflow: auto" ></div>
+            <div class="content-wrapper  " style="margin-right: 0px!important"  > 
+                <div class="container-fluid" >
+                    <div class="frame" style="overflow: auto" ></div>
+                </div>
             </div>
 
 

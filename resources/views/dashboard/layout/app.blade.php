@@ -1,10 +1,7 @@
 
 <?php $startLoadTime = time(); ?>
-<!-- Content Header (Page header) -->
-
-<br>
-<br>
-<section class="content-header font">
+<!-- Content Header (Page header) --> 
+<section class="content-header font hidden">
     <h1 class="font" >
         @yield("title")
     </h1>
@@ -25,7 +22,11 @@
 
 <!-- Main content -->
 <section class="content" style="direction: rtl">   
-    <div class="w3-white round shadow w3-animate-opacity w3-padding table-responsive"> 
+    <div class="w3-white shadow w3-animate-opacity table-responsive" style="padding: 5px" > 
+        <div class="w3-large w3-padding" style="border-bottom: 2px dashed gray" >
+            @yield("title")
+        </div>
+        <br>
         @yield("content")
     </div> 
     <!-- /.row -->
