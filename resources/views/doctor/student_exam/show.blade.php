@@ -18,7 +18,7 @@
         {{ $exam->header_text }}
     </div>
     
-    @foreach($exam->getQuestions() as $category) 
+    @foreach($studentExam->getQuestions() as $category) 
     <div class="w3-large" >
         {{ $loop->iteration }}) {{ $category->name }}
     </div>
