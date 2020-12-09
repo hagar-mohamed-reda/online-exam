@@ -40,8 +40,8 @@ class Category extends Model
         $builder->setAddRoute(url('/category/store'))
                 ->setEditRoute(url('/category/update') . "/" . $this->id)
                 ->setCol(["name" => "id", "label" => __('id'), "editable" => false ])
-                ->setCol(["name" => "name", "label" => __('name'), "col" => 'col-lg-12 col-md-12 col-sm-12'])
-                ->setCol(["name" => "notes", "label" => __('notes'), "required" => false, "col" => 'col-lg-12 col-md-12 col-sm-12'])
+                ->setCol(["name" => "name", "label" => __('name'), "type" => "textarea",  "col" => 'col-lg-12 col-md-12 col-sm-12'])
+                ->setCol(["name" => "notes", "label" => __('notes'), "type" => "textarea", "required" => false, "col" => 'col-lg-12 col-md-12 col-sm-12'])
                 ->setUrl(url('/images/category'))
                 ->build();
 
