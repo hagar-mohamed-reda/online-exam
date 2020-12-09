@@ -15,7 +15,7 @@
             <select class="form-control" name="course_id" v-model="search.course_id" >
                 <option value="" >{{ __('select al') }}</option>
                 @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
-                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                <option value="{{ $item->course_id }}" >{{ $item->name }}</option>
                 @endforeach
             </select>
             @else
