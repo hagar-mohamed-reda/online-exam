@@ -40,6 +40,20 @@ class StudentExam extends Model
         return $this->hasMany("App\StudentAnswer", "student_exam_id");
     }
     
+    public function getQuestions() {
+        $qIds = $this->studentAnswers()->pluck('question_id')->toArray();
+        $quetionQuery = Question::whereIn('id', $qIds);
+        $categoryIds = Question::whereIn('id', $qIds)->select('category_id')->distinct()->pluck('category_id')->toArray();
+        $categories = Category::whereIn('id', $categoryIds)->get();
+        
+        foreach($categories as $category) {
+            $qq = clone $quetionQuery;
+            $category->questions = $qq->where('category_id', $category->id)->get();
+        }
+        
+        return $categories;
+    }
+    
     public function questionGrade() {
         $total = optional($this->exam)->total;
         $questionCount = $this->studentAnswers()->count();
