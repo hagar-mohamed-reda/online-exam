@@ -109,6 +109,10 @@
         width: 100%!important;
     }
     
+    .pull-left {
+        float: left!important;
+    }
+    
     .pull-right {
         float: right!important;
     }

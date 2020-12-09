@@ -48,6 +48,7 @@
                           <span v-html="notification.title" ></span>
                           <small><i class="fa fa-clock-o" ></i> <b v-html="notification.created_at" ></b></small>
                       </h4>
+                        <br>
                       <p v-html="notification.message" ></p>
                     </a>
                   </li> 
