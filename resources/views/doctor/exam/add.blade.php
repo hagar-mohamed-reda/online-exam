@@ -20,7 +20,7 @@
     <form method="post" class="form" action="{{ url('/') }}/exam/store" id="form" autocomplete="off" >   
         @csrf
 
-        <div class="slide slide-1 row" style="display: block">
+        <div class="slide slide-1 " style="display: block">
             <table class="table" >
                 <tr>
                     <td>{{ __('exam name') }} *</td>
@@ -146,12 +146,14 @@
                 <table class="table table-bordered" >
                     <tr class="text-right" >
                         <th class="text-right" >{{ __('question') }}</th>
+                        <th class="text-right" >{{ __('question_grade') }}</th>
                         <th class="text-right" > 
                             {{ __('is selected') }}
                         </th>
                     </tr> 
                     <tr class="text-right" >
                         <th class="text-right" >{{ __('select all') }}</th>
+                        <th class="text-right" ></th>
                         <th class="text-right" > 
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
@@ -174,6 +176,9 @@
                         <td>
                             {{ $item->text }}
                             <input type="hidden" name="question_id[]" value="{{ $item->id }}" >
+                        </td>
+                        <td> 
+                            <input type="number" name="grade[]"  >
                         </td>
                         <td>
                             <div class="material-switch pull-right w3-margin-top">

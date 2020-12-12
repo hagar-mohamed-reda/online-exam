@@ -41,9 +41,11 @@ Route::group(["middleware" => "admin"], function() {
     Route::get("exam/create", "doctor\ExamController@create");
     Route::get("exam/data", "doctor\ExamController@getData");
     Route::get("exam/show/{exam}", "doctor\ExamController@show");
+    Route::get("exam/show2/{exam}", "doctor\ExamController@show2");
     Route::get("exam/edit/{exam}", "doctor\ExamController@edit");
     Route::get("exam/remove/{exam}", "doctor\ExamController@destroy");
     Route::get("exam/assign/{exam}", "doctor\ExamController@assign");
+    Route::post("exam/approveResult/{exam}", "doctor\ExamController@approveResult");
     Route::post("exam/assign/store/{exam}", "doctor\ExamController@assignStudents");
     Route::post("exam/update/{exam}", "doctor\ExamController@update");
 

@@ -114,14 +114,18 @@ class ExamRoomController extends Controller {
             $studentExam->studentAnswers()->delete();
             
             // add new
+            $totalGrade = 0;
             foreach ($data->questions as $q) {
                 $question = Question::find($q->question_id);
+                $examQuestion = $question->getExamQuestion($exam);
                 $grade = 0;
                 $answerId = 0;
                 if (str_replace(" ", "", $q->answer) == str_replace(" ", "", $question->answer)) {
-                    $grade = $questionGrade > 0 ? $questionGrade : $question->default_grade;
+                    $grade = optional($examQuestion)->grade > 0 ? optional($examQuestion)->grade : $questionGrade;
                     $answerId = optional($question->answer_choice)->id;
                 }
+                
+                $totalGrade += $grade;
                 StudentAnswer::create([
                     "student_exam_id" => $studentExam->id,
                     "question_id" => $q->question_id,
@@ -133,6 +137,7 @@ class ExamRoomController extends Controller {
 
             $studentExam->update([
                 "is_ended" => 1,
+                "grade" => $totalGrade,
                 "end_time" => date('Y-m-d H:i:s'),
             ]);
 

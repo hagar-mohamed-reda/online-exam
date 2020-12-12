@@ -25,6 +25,11 @@ class StudentExam extends Model
         foreach($this->studentAnswers()->get() as $item) {
             $grade += $item->grade;
         }
+        
+        $this->update([
+            "grade" => $grade
+        ]);
+        
         return $grade;
     }
     

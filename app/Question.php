@@ -70,6 +70,11 @@ class Question extends Model
         return optional($resource)->answer;
     }
     
+    public function getExamQuestion($exam) {
+        $resource = ExamQuestion::where('question_id', $this->id)->where('exam_id', $exam->id)->first();
+        return $resource;
+    }
+    
     public function getView($counter, $showAnswer=null, $studentExam=null) {
         $question = $this;
         $view = null;

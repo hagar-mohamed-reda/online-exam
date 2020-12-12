@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 
 class Exam extends Model
@@ -26,14 +27,25 @@ class Exam extends Model
         'minutes',
         'total',
         'question_number',
+        'show_result',
         'required_password'
-    ]; 
+    ];
 
     public $appends = ['can_delete'];
     
     public function getCanDeleteAttribute() {
         return StudentExam::where('exam_id', $this->id)->exists() ? false : true;
     }
+    
+    public function getTotalAttribute() {
+        $exam = DB::table('exam_exams')->find($this->id);
+        $examTotal = 0;
+        foreach($this->questions()->get() as $item)
+            $examTotal += $item->grade;
+        
+        return $examTotal > 0? $examTotal : optional($exam)->total;
+    }
+    
     
     public function course() {
         return $this->belongsTo("App\Course");
@@ -54,6 +66,10 @@ class Exam extends Model
     
     public function examAssign() {
         return $this->hasMany("App\ExamAssign");
+    }
+    
+    public function studentExams() {
+        return $this->hasMany("App\StudentExam");
     }
     
     public function hasQuestion($question) {
@@ -83,4 +99,19 @@ class Exam extends Model
         
         return $categories;
     }
+    
+    public function difficulteQuestions() {
+        $studentExamsIds = StudentExam::where('exam_id', $this->id)->pluck('id')->toArray();
+        $studentAnswer = StudentAnswer::whereIn('student_exam_id', $studentExamsIds)->orderBy('grade', 'ASC')->first();
+        
+        return Question::find(optional($studentAnswer)->question_id);
+    }
+    
+    public function easyQuestions() {
+        $studentExamsIds = StudentExam::where('exam_id', $this->id)->pluck('id')->toArray();
+        $studentAnswer = StudentAnswer::whereIn('student_exam_id', $studentExamsIds)->orderBy('grade', 'DESC')->first();
+        
+        return Question::find(optional($studentAnswer)->question_id);
+    }
+    
 }

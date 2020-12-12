@@ -12,7 +12,7 @@
 </section>
 
 <!-- Add button -->
-<div class="w3-display-bottom{{ Lang::getLang() == 'Ar'? 'left' : 'right' }} w3-padding floatbtn-place" > 
+<div class="w3-display-bottom{{ Lang::getLang() == 'Ar'? 'left' : 'right' }} w3-padding floatbtn-place" style="z-index: 9999999999" > 
     <button class="btn w3-blue shadow btn-float w3-animate-zoom modal-trigger"  
             data-toggle="modal" 
             data-target="#addModal" >
@@ -22,7 +22,7 @@
 
 <!-- Main content -->
 <section class="content" style="direction: rtl">   
-    <div class="w3-white shadow w3-animate-opacity table-responsive" style="padding: 5px" > 
+    <div class="w3-white shadow w3-animate-opacity" style="padding: 5px" > 
         <div class="w3-large w3-padding" style="border-bottom: 2px dashed gray" >
             @yield("title")
         </div>

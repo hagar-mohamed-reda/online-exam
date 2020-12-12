@@ -19,6 +19,7 @@
         @csrf
         <div class="row" >
             <div class="col-lg-4 col-md-4" >
+                <label>{{ __('question_type') }}</label>
                 <select class="form-control type_id"  name="type_id" onchange="checkOnType()" v-model="resource.type_id" >
                     <option>-- {{ __('select type') }} --</option>
                     @foreach(App\QuestionType::all() as $item)
@@ -27,6 +28,7 @@
                 </select>
             </div>
             <div class="col-lg-4 col-md-4" >
+                <label>{{ __('categories') }}</label>
                 <select class="form-control category_id"  name="category_id"  v-model="resource.category_id" >
                     <option>-- {{ __('select type') }} --</option>
                     @foreach(Auth::user()->toDoctor()->categories()->get() as $item)
@@ -35,6 +37,7 @@
                 </select>
             </div>
             <div class="col-lg-4 col-md-4" >
+                <label>{{ __('course') }}</label>
                 <select class="form-control select2 w3-block course_id" name="course_id" onclick="app.resource.course_id=this.value" >
                     @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
                     <option value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>

@@ -50,7 +50,6 @@
 <link rel="stylesheet" href="{{ url('/') }}/css/bootstrap-switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/switch.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/iziToast.css">
-<link rel="stylesheet" href="{{ url('/') }}/Bootstrap-RTL-3.3.7.3/3.3.7/bootstrap.rtl.full.min.css">
 <link rel="stylesheet" href="{{ url('/') }}/css/app.css">
 <link rel="shortcut icon" href="{{ url('/') }}/image/logo.png" type="image/png">
  
@@ -108,13 +107,20 @@
     .select2:hover {
         width: 100%!important;
     }
+    .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+        float: right!important;
+    }
     
-    .pull-left {
-        float: left!important;
+    .table, tr, th, td {
+       text-align: right;
     }
     
     .pull-right {
         float: right!important;
+    }
+    
+    .pull-left {
+        float: left!important;
     }
 </style>
 <style> 

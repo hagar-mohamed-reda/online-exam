@@ -10,7 +10,7 @@ class ExamQuestion extends Model
     protected $table = "exam_exam_questions";
 
     protected $fillable = [
-        'question_id', 'exam_id'
+        'question_id', 'exam_id', 'grade'
     ]; 
 
     public $appends = [

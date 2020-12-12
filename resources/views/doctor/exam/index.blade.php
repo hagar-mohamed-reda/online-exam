@@ -7,6 +7,36 @@
 @endphp  
 
 @section("content")
+<div id="filter" >
+    <div class="row" >
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label>{{ __('course') }}</label>
+            
+            @if (Auth::user()->type == 'doctor')
+            <select class="form-control" name="course_id" v-model="search.course_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
+                <option value="{{ $item->course_id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+            @else
+            <select class="form-control" name="course_id" v-model="search.course_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(App\Course::all() as $item)
+                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+            @endif
+        </div> 
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label></label> 
+            <br>
+            <button class="btn btn-primary"  onclick="search()" >{{ __('search') }}</button>
+        </div>
+    </div>
+</div>
+<br>
+<br>
 <table class="table table-bordered" id="table" >
     <thead>
         <tr> 
@@ -52,8 +82,25 @@
 
 @section("js")  
 <script> 
+    var table = null;
+    
+    function search() {
+        var url = "{{ url('/exam/data') }}?" + $.param(app.search);
+        table.ajax.url(url);
+        table.ajax.reload();
+    }
+    
+    var app = new Vue({
+        el: '#filter',
+        data: {
+            search: {}
+        },
+        methods: {
+        }
+    });
+    
 $(document).ready(function() {
-     $('#table').DataTable({
+     table = $('#table').DataTable({
         "processing": true,
         "serverSide": true,
         "pageLength": 5,

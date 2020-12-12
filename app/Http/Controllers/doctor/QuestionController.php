@@ -31,14 +31,21 @@ class QuestionController extends Controller
     public function getData() {
         $query = null;
         if (Auth::user()->type == 'admin')
-            $query = Question::query();
-        
-        else
+            $query = Question::query(); 
+        else 
             $query = Question::query()
-                ->where("doctor_id", Auth::user()->fid)
-                ->orWhere("is_sharied", '1');
+                ->where("doctor_id", Auth::user()->fid);
+                //->orWhere("is_sharied", '1');
         
+        if (request()->category_id > 0)
+            $query->where('category_id', request()->category_id);
         
+        if (request()->question_type_id > 0)
+            $query->where('question_type_id', request()->question_type_id);
+        
+        if (request()->course_id > 0)
+            $query->where('course_id', request()->course_id);
+         
         return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Question $question) {
                             return view("doctor.question.action", compact("question"));
@@ -69,7 +76,10 @@ class QuestionController extends Controller
                             return "<span class='label label-$label' >$text</span>";
                         }) 
                         ->editColumn('photo', function(Question $question) {
-                            return "<img src='".$question->photo_url."' style='width: 40px' onclick='viewImage(this)' >";
+                            if ($question->photo)
+                                return "<img src='".$question->photo_url."' style='width: 40px' onclick='viewImage(this)' >";
+                            else
+                                return "";
                         }) 
                         ->rawColumns(['action', 'active', 'is_sharied', 'photo'])
                         ->toJson();

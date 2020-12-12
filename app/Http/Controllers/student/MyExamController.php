@@ -57,6 +57,12 @@ class MyExamController extends Controller
                         ->addColumn('total', function(StudentExam $exam) {
                             return optional($exam->exam)->total;
                         }) 
+                        ->editColumn('grade', function(StudentExam $exam) {
+                            if ($exam->exam->show_result == 1)
+                                return $exam->grade;
+                            else 
+                                return __('cant see result'); 
+                        }) 
                         ->rawColumns(['action'])
                         ->toJson();
     } 

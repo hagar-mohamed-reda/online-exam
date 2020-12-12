@@ -58,7 +58,7 @@
 
         </div>  
 
-        <div class="slide slide-2 row">
+        <div class="slide slide-2">
             <table class="table" >
                 <tr>
                     <td>{{ __('text') }} *</td>

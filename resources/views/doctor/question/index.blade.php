@@ -7,6 +7,53 @@
 @endphp  
 
 @section("content")
+<div id="filter2" >
+    <div class="row" >
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label>{{ __('course') }}</label>
+            
+            @if (Auth::user()->type == 'doctor')
+            <select class="form-control" name="course_id" v-model="search.course_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
+                <option value="{{ $item->course_id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+            @else
+            <select class="form-control" name="course_id" v-model="search.course_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(App\Course::all() as $item)
+                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+            @endif
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label>{{ __('category') }}</label>
+            <select class="form-control" v-model="search.category_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(Auth::user()->categories()->get() as $item)
+                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label>{{ __('question_types') }}</label>
+            <select class="form-control"  v-model="search.question_type_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(App\QuestionType::all() as $item)
+                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div> 
+        <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label></label> 
+            <br>
+            <button class="btn btn-primary"  onclick="search()" >{{ __('search') }}</button>
+        </div>
+    </div>
+</div>
+<br>
 <div>
     @if (Auth::user()->type == 'doctor')
     <button class="btn btn-primary" onclick="showPage('question/create2')" >{{ __('add multi questions') }}</button>
@@ -72,8 +119,25 @@
 @section("js") 
  
 <script> 
+    var table = null;
+    
+    function search() {
+        var url = "{{ url('/question/data') }}?" + $.param(app.search);
+        table.ajax.url(url);
+        table.ajax.reload();
+    }
+    
+    var app = new Vue({
+        el: '#filter2',
+        data: {
+            search: {}
+        },
+        methods: {
+        }
+    });
+    
 $(document).ready(function() {
-     $('#table').DataTable({
+    table = $('#table').DataTable({
         "processing": true,
         "serverSide": true,
         "pageLength": 10,

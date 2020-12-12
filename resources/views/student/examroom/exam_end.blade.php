@@ -43,6 +43,7 @@
             <th>{{ __('end_time') }}</th>
             <td>{{ $exam->end_time }}</td>
         </tr>
+        @if ($exam->show_result == 1)
         <tr>
             <th>{{ __('grade') }}</th>
             <td>
@@ -53,6 +54,7 @@
                 @endif 
                 / <b>{{ optional($exam->exam)->total }}</b></td>
         </tr>
+        @endif
     </table>
     <br>
     <div  class="w3-center" >

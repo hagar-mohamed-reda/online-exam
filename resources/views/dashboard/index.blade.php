@@ -10,12 +10,14 @@
         <div id="root" >
             <!-- include topbar html -->
             {!! view("dashboard.layout.topbar") !!}
+            <!-- include topbar html -->
+            {!! view("dashboard.layout.navbar") !!} 
  
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper  " style="margin-right: 0px!important"  > 
-                <div class="container-fluid" >
-                    <div class="frame" style="overflow: auto" ></div>
+            <div class="content-wrapper  "   > 
+                <div class="container" >
+                    <div class="frame w3-padding" style="overflow: auto"  ></div>
                 </div>
             </div>
 

@@ -43,6 +43,9 @@ class ExamController extends Controller
         $query = Exam::where("doctor_id", Auth::user()->fid);
         
         
+        if (request()->course_id > 0)
+            $query->where('course_id', request()->course_id);
+        
         return DataTables::eloquent($query->latest())
                         ->addColumn('action', function(Exam $exam) {
                             return view("doctor.exam.action", compact("exam"));
@@ -99,6 +102,32 @@ class ExamController extends Controller
     }
     
     /**
+     * Show the form for assign students for exam.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show2(Exam $exam)
+    { 
+        return view("doctor.exam.show2", compact("exam"));
+    }
+    
+    /**
+     * Show the form for assign students for exam.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function approveResult(Exam $exam)
+    { 
+        $exam->update([
+            "show_result" => '1'
+        ]);
+        return [
+            "status" => 1, 
+            "message" => __('done'), 
+        ];
+    }
+    
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -126,6 +155,7 @@ class ExamController extends Controller
                 if ($request->is_selected[$index] == 1) {
                     ExamQuestion::create([
                         "exam_id" => $exam->id, 
+                        "grade" => $request->grade[$index],  
                         "question_id" => $request->question_id[$index],  
                     ]);
                 }
@@ -205,6 +235,7 @@ class ExamController extends Controller
                 if ($request->is_selected[$index] == 1) {
                     ExamQuestion::create([
                         "exam_id" => $exam->id, 
+                        "grade" => $request->grade[$index],  
                         "question_id" => $request->question_id[$index],  
                     ]);
                 }
