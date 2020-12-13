@@ -4,7 +4,7 @@
     <i class="fa fa-edit w3-text-orange w3-button" onclick="showPage('question/edit/{{ $question->id }}')"  ></i>
     @endif 
     
-    <i class="fa fa-desktop w3-text-green w3-button" onclick="edit('{{ url('/question/show') . '/' . $question->id }}', 'showModal', 'showModalPlace')" ></i>
+    <i class="fa fa-desktop w3-text-green w3-button" onclick="edit('{{ url('/question/show') . '/' . $question->id }}', 'showModal', 'showModalPlace')" >{{ __('show') }}</i>
     
     
     @if (Auth::user()->type == 'doctor') 

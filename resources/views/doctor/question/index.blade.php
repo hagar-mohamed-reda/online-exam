@@ -42,7 +42,7 @@
             <select class="form-control"  v-model="search.question_type_id" >
                 <option value="" >{{ __('select al') }}</option>
                 @foreach(App\QuestionType::all() as $item)
-                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
                 @endforeach
             </select>
         </div> 

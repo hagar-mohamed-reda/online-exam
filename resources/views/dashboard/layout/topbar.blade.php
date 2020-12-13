@@ -80,7 +80,7 @@
                                     <a href="#">{{ __('my exams') }}</a>
                                 </div>   
                                 @elseif (Auth::user()->type == 'doctor')
-                                <div class="col-xs-4 text-center" onclick="showPage('questions')" >
+                                <div class="col-xs-4 text-center" onclick="showPage('question')" >
                                     <a href="#">{{ __('questions') }}</a>
                                 </div> 
                                 <div class="col-xs-4 text-center" onclick="showPage('exam')" >
@@ -90,7 +90,7 @@
                                     <a href="#">{{ __('course') }}</a>
                                 </div>   
                                 @elseif (Auth::user()->type == 'admin')
-                                <div class="col-xs-4 text-center" onclick="showPage('questions')" >
+                                <div class="col-xs-4 text-center" onclick="showPage('question')" >
                                     <a href="#">{{ __('questions') }}</a>
                                 </div> 
                                 <div class="col-xs-4 text-center" onclick="showPage('exam')" >

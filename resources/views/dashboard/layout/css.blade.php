@@ -122,6 +122,10 @@
     .pull-left {
         float: left!important;
     }
+    
+    .w3-ul li {
+        text-align: right!important
+    }
 </style>
 <style> 
 

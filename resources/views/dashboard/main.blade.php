@@ -160,7 +160,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" style="padding: 5px!important" >
-                    <div id="chart_div3" class="w3-block" ></div> 
+                    <div id="chart_div3" style="width: 90%" ></div> 
                 </div>
                 <!-- ./box-body -->
                 <div class="box-footer"> 
@@ -189,7 +189,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" style="padding: 5px!important" >
-                    <div id="chart_class" class="w3-block" ></div> 
+                    <div id="chart_class" style="width: 90%" ></div> 
                 </div>
                 <!-- ./box-body -->
                 <div class="box-footer"> 

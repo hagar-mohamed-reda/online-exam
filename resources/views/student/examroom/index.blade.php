@@ -99,6 +99,7 @@
             
             if (seconds < 60)
                 remindSeconds = seconds;
+            
             $('#minutesDiv').html(parseInt(minutes) + ":" + remindSeconds);
             
             if (minutes > (totalMinutes / 2))

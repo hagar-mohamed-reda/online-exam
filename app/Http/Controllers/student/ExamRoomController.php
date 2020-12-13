@@ -125,6 +125,10 @@ class ExamRoomController extends Controller {
                     $answerId = optional($question->answer_choice)->id;
                 }
                 
+                if ($question->question_type_id == 4) {
+                    $grade = 0;
+                }
+                
                 $totalGrade += $grade;
                 StudentAnswer::create([
                     "student_exam_id" => $studentExam->id,
