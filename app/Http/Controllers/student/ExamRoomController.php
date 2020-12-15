@@ -48,7 +48,7 @@ class ExamRoomController extends Controller {
         $startTime = strtotime($studentExam->start_time);
         $endTime = strtotime($studentExam->end_time);
 
-        $minutes = ($endTime - $startTime) / (1000 * 60);
+        $minutes = ($endTime - $startTime) / (60);
         //
         if ($minutes >= $exam->minutes || $studentExam->is_ended) {
             return view("student.examroom.exam_end", ["exam" => $studentExam]);
@@ -56,7 +56,7 @@ class ExamRoomController extends Controller {
             $exam->minutes = number_format($exam->minutes - $minutes, 1);
         }
 
-        return $minutes;
+        //return $minutes;
 
         return view("student.examroom.index", compact("exam"));
     }
