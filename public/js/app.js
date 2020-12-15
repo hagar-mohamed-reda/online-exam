@@ -153,6 +153,7 @@ function showPage(url) {
         var element = document.createElement('div');
         $(element).html(response); 
         $(element).find('script').addClass('page-scripts'); 
+        $(".frame").html('');
         $(".frame").append(element);
     });
 }
