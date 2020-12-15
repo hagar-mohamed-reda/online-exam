@@ -25,7 +25,7 @@ class ExamRoomController extends Controller {
      */
     public function index() {
         date_default_timezone_set('Africa/Cairo');
-        Carbon::setLocale("ar");
+        //Carbon::setLocale("ar");
 
         $exam = Exam::find(request()->exam_id);
         $studentExam = StudentExam::where('student_id', Auth()->user()->fid)
@@ -45,8 +45,8 @@ class ExamRoomController extends Controller {
             ]);
         }
 
-        $startTime = strtotime($exam->start_time);
-        $endTime = strtotime($exam->end_time);
+        $startTime = strtotime($studentExam->start_time);
+        $endTime = strtotime($studentExam->end_time);
 
         $minutes = ($endTime - $startTime) / (1000 * 60);
         //
