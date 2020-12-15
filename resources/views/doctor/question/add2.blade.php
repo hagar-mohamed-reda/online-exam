@@ -67,11 +67,11 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'choice_' + index"  
-                            name="is_answer[][]"  
+                            v-bind:name=" 'choice_' + index"
                             checked=""
                             class="mulit_choice_answers question-answer"
                             value="1"  required=""
-                            type="checkbox"/>
+                            type="radio"/>
                         <label v-bind:for="'choice_' + index" class="label-primary"></label>
                     </div> 
                 </td>
@@ -107,12 +107,12 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'choice_' + index + '-' +  index2"  
-                            name="is_answer[][]"
+                            v-bind:name=" 'choice_' + index"
                             v-bind:checked="index2 == 0"
                             class="mulit_choice_answers question-answer"
                             value="0"   
                             onchange="selectTrueFalse(this)"
-                            type="checkbox"/>
+                            type="radio"/>
                         <label v-bind:for="'choice_' + index + '-' +  index2" class="label-primary"></label>
                     </div> 
                 </td>
@@ -148,11 +148,11 @@
                 <center class="modal-title w3-xlarge">{{ __('add question') }}</center>
             </div>
             <div class="modal-body">
-                <div class="form-group w3-padding col-lg-12 col-md-12 col-sm-12">
+                <div class="form-group w3-padding col-lg-12 col-md-12 col-sm-12 text-center">
                     <label for="multiChoiceNumbers">{{ __('number of choices') }}</label>
                     <input required="" 
                            type="number" 
-                           class="form-control " id="multiChoiceNumbers"   placeholder="{{ __('number of choices') }}">
+                           class="form-control text-center" id="multiChoiceNumbers"   placeholder="{{ __('number of choices') }}">
                 </div> 
                 <center>  
                     <button onclick="setMultiChoiceNumber()" type="button" class="btn btn-success btn-flat margin" data-dismiss="modal" >{{ __('ok') }}</button>

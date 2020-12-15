@@ -5,7 +5,7 @@
         {!! view("dashboard.layout.css") !!}
 
     </head>
-    <body class="layout-top-nav {{ App\Setting::find(1)->value }}"  >
+    <body class="hold-transition fixed sidebar-mini  {{ App\Setting::find(1)->value }}"  >
 
         <div id="root" >
             <!-- include topbar html -->
@@ -15,10 +15,8 @@
  
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper  "   > 
-                <div class="container" >
-                    <div class="frame w3-padding" style="overflow: auto"  ></div>
-                </div>
+            <div class="content-wrapper  "   >  
+                    <div class="frame w3-padding" style="overflow: auto"  ></div> 
             </div>
 
 

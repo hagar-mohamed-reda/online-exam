@@ -61,7 +61,7 @@
                 <tr>
                     <td>{{ __('course') }} *</td>
                     <td>
-                        <select class="form-control select2  w3-block course-select"   onchange="filterWithCourse();" name="course_id"  >
+                        <select class="form-control select2  w3-block course-select" required=""  onchange="filterWithCourse();" name="course_id"  >
                             <option   value="" >{{ __('select course') }}</option>
                             @foreach(Auth::user()->doctorCourses()->get() as $item)
                             <option value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>
@@ -259,6 +259,11 @@
     }
 
     function showSlide(slide) {  
+        if (slide == 2) {
+            if (!$('.course-select').val())
+                return error('{{ __("select course first") }}');
+        }
+        
         $(".slide").hide();
         $(".slide-" + slide).show();
     }
