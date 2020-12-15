@@ -50,8 +50,7 @@
         <table class="table table-bordered question-table" >
             <tr>
                 <th>#</th>
-                <th>{{ __('text') }}</th> 
-                <th>{{ __('image') }}</th> 
+                <th>{{ __('text') }}</th>  
                 <th  v-if="type == 1" ></th>
                 <th  v-if="type == 1" ></th>
                 <th v-for="(item, index) in multiChoiceNumber"  v-if="type == 2"  >
@@ -62,11 +61,7 @@
                 <td v-html="index + 1" ></td>
                 <td>
                     <input type="text"  name="text[]" required=""  class="question-text form-control" >
-                </td> 
-                <td class="w3-display-container" >
-                    <input type="file" onchange="loadImage(this, event)"  name="image[]"  class="question-image form-control" >
-                    <img class="imageView w3-display-topleft w3-round" onclick="viewImage(this)" style="padding: 5px;height: 40px" >
-                </td> 
+                </td>   
                 <td  v-if="type == 3" class="w3-display-container" >
                     <input type="text"  v-model="item.text"   name="choice[][]" required=""  class="question-choice form-control" >
                     <div class="material-switch w3-display-topleft w3-padding">
