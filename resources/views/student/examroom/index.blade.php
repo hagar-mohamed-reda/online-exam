@@ -82,7 +82,7 @@
 @endif
 
 @if (((request()->password == $exam->password) && $exam->required_password) || !$exam->required_password)
-<script>
+<script class="page-scripts" >
     var totalMinutes = {{ $exam->minutes }};
     var minutes = 0;
     var seconds = 0;

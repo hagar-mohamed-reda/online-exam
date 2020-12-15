@@ -53,7 +53,7 @@ class ExamRoomController extends Controller {
         if ($minutes >= $exam->minutes || $studentExam->is_ended) {
             return view("student.examroom.exam_end", ["exam" => $studentExam]);
         } else {
-            $exam->minutes = round($exam->minutes - $minutes, 1);
+            $exam->minutes = number_format($exam->minutes - $minutes, 1);
         }
 
 
