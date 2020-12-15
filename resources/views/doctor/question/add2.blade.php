@@ -32,7 +32,7 @@
                 <select class="form-control category_id" required=""   name="category_id"  v-model="resource.category_id" >
                     <option>-- {{ __('select type') }} --</option>
                     @foreach(Auth::user()->toDoctor()->categories()->get() as $item)
-                    <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
+                    <option value="{{ $item->id }}" >{{ $item->name }}</option>
                     @endforeach
                 </select>
             </div>
