@@ -48,14 +48,14 @@
         <div class="col-lg-3 col-md-3 col-sm-6" >
             <label>{{ __('exams') }}</label>
             @if (Auth::user()->type == 'admin')
-            <select class="form-control"  v-model="search.exam_id" >
+            <select class="form-control select2"  v-model="search.exam_id" >
                 <option value="" >{{ __('select al') }}</option>
                 @foreach(App\Exam::all() as $item)
                 <option value="{{ $item->id }}" >{{ $item->name }} - {{ optional($item->course)->name }}</option>
                 @endforeach
             </select>
             @else
-            <select class="form-control"  v-model="search.exam_id" >
+            <select class="form-control select2"  v-model="search.exam_id" >
                 <option value="" >{{ __('select al') }}</option>
                 @foreach(Auth::user()->toDoctor()->exams()->get() as $item)
                 <option value="{{ $item->id }}" >{{ $item->name }} - {{ optional($item->course)->name }}</option>
@@ -135,6 +135,8 @@
                 { "data": "action" },
             ]
          });
+         
+         $('.select2').select2();
 
          formAjax(); 
 

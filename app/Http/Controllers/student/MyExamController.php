@@ -59,7 +59,7 @@ class MyExamController extends Controller
                         }) 
                         ->editColumn('grade', function(StudentExam $exam) {
                             if ($exam->exam->show_result == 1)
-                                return $exam->grade;
+                                return $exam->grade . "/" . optional($exam->exam)->total;
                             else 
                                 return __('cant see result'); 
                         }) 

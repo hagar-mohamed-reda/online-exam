@@ -14,7 +14,7 @@
             <th>{{ __('course') }}</th>   
             <th>{{ __('minutes') }}</th>   
             <th>{{ __('doctor') }}</th>    
-            <th>{{ __('total') }}</th>   
+            <th>{{ __('exam_total') }}</th>   
             <th>{{ __('grade') }}</th>   
             <th></th>
         </tr>
