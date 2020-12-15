@@ -56,7 +56,7 @@ class ExamRoomController extends Controller {
             $exam->minutes = number_format($exam->minutes - $minutes, 1);
         }
 
-
+        return $minutes;
 
         return view("student.examroom.index", compact("exam"));
     }
