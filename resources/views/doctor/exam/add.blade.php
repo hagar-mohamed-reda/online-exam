@@ -123,9 +123,11 @@
                 <table class="table table-bordered">
                     <tr>
                         <td>
+                            <label>{{ __('search about question') }}</label>
                             <input class="form-control" onkeyup="search(this.value, null, null)" placeholder="{{ __('search about question') }}" >
                         </td>
                         <td>
+                            <label>{{ __('categories') }}</label>
                             <select class="form-control select2 w3-block" onchange="search(null, this.value, null)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(Auth::user()->categories()->get() as $item)
@@ -134,6 +136,7 @@
                             </select> 
                         </td>
                         <td>
+                            <label>{{ __('question_types') }}</label>
                             <select class="form-control select2 w3-block" onchange="search(null, null, this.value)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(App\QuestionType::all() as $item)
