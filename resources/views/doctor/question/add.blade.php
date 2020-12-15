@@ -67,7 +67,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>{{ __('image') }} *</td>
+                    <td>{{ __('image') }} </td>
                     <td>
                         <input type="file" name="photo" class="form-control" onchange="loadImage(this, event)" >
                     </td>

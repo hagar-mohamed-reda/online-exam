@@ -146,6 +146,9 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         try {
+            if (strtotime($request->end_time) <= strtotime($request->start_time))
+                return Message::error("end time must be large than start time");
+            
             $data = $request->all();
             $data["doctor_id"] = Auth::user()->fid;
             //$data["name"] = Course::find($request->course_id)->code . "-" . date('Y-m-d') . "-" . $request->name;
@@ -225,6 +228,9 @@ class ExamController extends Controller
     public function update(Request $request, Exam $exam)
     { 
         try {
+            if (strtotime($request->end_time) <= strtotime($request->start_time))
+                return Message::error("end time must be large than start time");
+            
             $exam->update($request->all()); 
             
             // delete old and add new

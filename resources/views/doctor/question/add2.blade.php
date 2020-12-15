@@ -20,8 +20,8 @@
         <div class="row" >
             <div class="col-lg-4 col-md-4" >
                 <label>{{ __('question_type') }}</label>
-                <select class="form-control type_id"  name="type_id" onchange="checkOnType()" v-model="resource.type_id" >
-                    <option>-- {{ __('select type') }} --</option>
+                <select class="form-control type_id" required=""  name="type_id" onchange="checkOnType()" v-model="resource.type_id" >
+                    <option >-- {{ __('select type') }} --</option>
                     @foreach(App\QuestionType::all() as $item)
                     <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
                     @endforeach
@@ -29,7 +29,7 @@
             </div>
             <div class="col-lg-4 col-md-4" >
                 <label>{{ __('categories') }}</label>
-                <select class="form-control category_id"  name="category_id"  v-model="resource.category_id" >
+                <select class="form-control category_id" required=""   name="category_id"  v-model="resource.category_id" >
                     <option>-- {{ __('select type') }} --</option>
                     @foreach(Auth::user()->toDoctor()->categories()->get() as $item)
                     <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-lg-4 col-md-4" >
                 <label>{{ __('course') }}</label>
-                <select class="form-control select2 w3-block course_id" name="course_id" onclick="app.resource.course_id=this.value" >
+                <select class="form-control select2 w3-block course_id" required=""  name="course_id" onclick="app.resource.course_id=this.value" >
                     @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
                     <option value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>
                     @endforeach
@@ -51,6 +51,7 @@
             <tr>
                 <th>#</th>
                 <th>{{ __('text') }}</th> 
+                <th>{{ __('image') }}</th> 
                 <th  v-if="type == 1" ></th>
                 <th  v-if="type == 1" ></th>
                 <th v-for="(item, index) in multiChoiceNumber"  v-if="type == 2"  >
@@ -61,6 +62,10 @@
                 <td v-html="index + 1" ></td>
                 <td>
                     <input type="text"  name="text[]" required=""  class="question-text form-control" >
+                </td> 
+                <td class="w3-display-container" >
+                    <input type="file" onchange="loadImage(this, event)"  name="image[]"  class="question-image form-control" >
+                    <img class="imageView w3-display-topleft w3-round" onclick="viewImage(this)" style="padding: 5px;height: 40px" >
                 </td> 
                 <td  v-if="type == 3" class="w3-display-container" >
                     <input type="text"  v-model="item.text"   name="choice[][]" required=""  class="question-choice form-control" >
@@ -107,7 +112,8 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'choice_' + index + '-' +  index2"  
-                            name="is_answer[][]" 
+                            name="is_answer[][]"
+                            v-bind:checked="index2 == 0"
                             class="mulit_choice_answers question-answer"
                             value="0"   
                             onchange="selectTrueFalse(this)"
@@ -121,7 +127,7 @@
             </tr>
 
         </table>
-        <button @click="addItem()" class="btn btn-default fa fa-plus" ></button>
+        <button type="button" @click="addItem()" class="btn btn-default fa fa-plus" ></button>
 
         <div  > 
 
@@ -181,6 +187,10 @@
 
     function setMultiChoiceNumber() {
         multiChoiceNumber = $("#multiChoiceNumbers").val();
+        if (multiChoiceNumber < 2) {
+            $(".type_id").val(null);
+            return error('{{ __("multi choice number must be >= 2") }}');
+        }
         app.multiChoiceNumber = [];
         for (var i = 0; i < multiChoiceNumber; i++) {
             app.multiChoiceNumber.push(i + 1);
@@ -231,7 +241,7 @@
             slide1Valid = false;
         }
 
-        if (type == 2 && !multiChoiceNumber) {
+        if (type == 2) {
             showMultiChoiceDialog();
             //error("{{ __('enter number of choices') }}");
             slide1Valid = false;
@@ -245,6 +255,7 @@
     function getObject() {
         var resource = {};
         var questions = [];
+        var validate = true;
         $('.question-row').each(function(){ 
             var item = {};
             item.text = $(this).find('.question-text').val();

@@ -90,6 +90,9 @@
 @section("js") 
  
 <script> 
+    @if (Auth::user()->type != 'admin')
+        $('.floatbtn-place').remove();
+    @endif
     
     $(document).ready(function() {
          $('#table').DataTable({

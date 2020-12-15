@@ -28,7 +28,7 @@
                 @foreach(App\Department::all() as $item)
                 <tr>
                     <td>
-                        {{ $item->name }}
+                        {{ $item->name }} - {{ optional($item->level)->name }}
                         <input type="hidden" name="department_id[]" value="{{ $item->id }}" >
                     </td>
                     <td>

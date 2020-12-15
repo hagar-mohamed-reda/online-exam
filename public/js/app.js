@@ -101,6 +101,19 @@ function error(message, title, img) {
     $(".izitoast").click();
 }
 
+function confirmMessage(message, action) { 
+    swal({
+        title: "😧 هل انت متاكد?" + message,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then(function (willDelete) {
+        if (willDelete) {
+            action();
+        } else {
+        }
+    });
+}
 
 function remove(text, url, div, action) {
     swal({
