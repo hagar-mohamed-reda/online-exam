@@ -33,7 +33,7 @@ class ExamRoomController extends Controller {
 
         if ($studentExam) {
             $studentExam->update([
-                "end_time" => Carbon::now()
+                "end_time" => date('Y-m-d H:i:s')
             ]);
         } else {
             $studentExam = StudentExam::create([
@@ -53,7 +53,7 @@ class ExamRoomController extends Controller {
         if ($minutes >= $exam->minutes || $studentExam->is_ended) {
             return view("student.examroom.exam_end", ["exam" => $studentExam]);
         } else {
-            $exam->minutes -= $minutes;
+            $exam->minutes = round($exam->minutes - $minutes, 1);
         }
 
 
