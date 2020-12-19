@@ -120,7 +120,7 @@ class ExamRoomController extends Controller {
                 $examQuestion = $question->getExamQuestion($exam);
                 $grade = 0;
                 $answerId = 0;
-                if (str_replace(" ", "", $q->answer) == str_replace(" ", "", $question->answer)) {
+                if ($q->answer == $question->answer) {
                     $grade = optional($examQuestion)->grade > 0 ? optional($examQuestion)->grade : $questionGrade;
                     $answerId = optional($question->answer_choice)->id;
                 }
