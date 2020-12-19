@@ -101,6 +101,19 @@ function error(message, title, img) {
     $(".izitoast").click();
 }
 
+function confirmMessage(message, action) { 
+    swal({
+        title: "😧 هل انت متاكد?" + message,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then(function (willDelete) {
+        if (willDelete) {
+            action();
+        } else {
+        }
+    });
+}
 
 function remove(text, url, div, action) {
     swal({
@@ -135,8 +148,13 @@ function remove(text, url, div, action) {
 function showPage(url) {
     var r = '<br><br><br><br><div class="text-center w3-xlarge w3-text-indigo shadow w3-white w3-round w3-padding w3-center" style="max-width: 200px!important;margin: auto" ><i class="fa fa-spin fa-spinner w3-margin" ></i> <br> loading !!</div>';
     $(".frame").html(r);
+    $('.page-scripts').remove();
     $.get(url, function (response) {
-        $(".frame").html(response);
+        var element = document.createElement('div');
+        $(element).html(response); 
+        $(element).find('script').addClass('page-scripts'); 
+        $(".frame").html('');
+        $(".frame").append(element);
     });
 }
 

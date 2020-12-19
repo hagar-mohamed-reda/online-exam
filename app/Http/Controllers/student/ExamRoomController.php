@@ -25,7 +25,7 @@ class ExamRoomController extends Controller {
      */
     public function index() {
         date_default_timezone_set('Africa/Cairo');
-        Carbon::setLocale("ar");
+        //Carbon::setLocale("ar");
 
         $exam = Exam::find(request()->exam_id);
         $studentExam = StudentExam::where('student_id', Auth()->user()->fid)
@@ -33,7 +33,7 @@ class ExamRoomController extends Controller {
 
         if ($studentExam) {
             $studentExam->update([
-                "end_time" => Carbon::now()
+                "end_time" => date('Y-m-d H:i:s')
             ]);
         } else {
             $studentExam = StudentExam::create([
@@ -45,18 +45,18 @@ class ExamRoomController extends Controller {
             ]);
         }
 
-        $startTime = strtotime($exam->start_time);
-        $endTime = strtotime($exam->end_time);
+        $startTime = strtotime($studentExam->start_time);
+        $endTime = strtotime($studentExam->end_time);
 
-        $minutes = ($endTime - $startTime) / (1000 * 60);
+        $minutes = ($endTime - $startTime) / (60);
         //
         if ($minutes >= $exam->minutes || $studentExam->is_ended) {
             return view("student.examroom.exam_end", ["exam" => $studentExam]);
         } else {
-            $exam->minutes -= $minutes;
+            $exam->minutes = number_format($exam->minutes - $minutes, 1);
         }
 
-
+        //return $minutes;
 
         return view("student.examroom.index", compact("exam"));
     }

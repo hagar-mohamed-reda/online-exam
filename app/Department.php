@@ -15,8 +15,12 @@ class Department extends Model
     protected $table = "departments";
 
     protected $fillable = [
-        'name',	'notes' 
+        'name',	'notes', 'level_id'
     ]; 
+    
+    public function level() {
+        return $this->belongsTo('App\Level');
+    }
 
     /**
      * build view object this will make view html

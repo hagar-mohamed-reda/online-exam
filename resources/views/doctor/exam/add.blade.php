@@ -47,7 +47,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>{{ __('total') }} *</td>
+                    <td>{{ __('exam_total') }} *</td>
                     <td>
                         <input name="total" type="number" required="" class="form-control"   >
                     </td>
@@ -61,7 +61,7 @@
                 <tr>
                     <td>{{ __('course') }} *</td>
                     <td>
-                        <select class="form-control select2  w3-block course-select"   onchange="filterWithCourse();" name="course_id"  >
+                        <select class="form-control select2  w3-block course-select" required=""  onchange="filterWithCourse();" name="course_id"  >
                             <option   value="" >{{ __('select course') }}</option>
                             @foreach(Auth::user()->doctorCourses()->get() as $item)
                             <option value="{{ optional($item)->course_id }}" >{{ optional($item)->name }}</option>
@@ -123,9 +123,11 @@
                 <table class="table table-bordered">
                     <tr>
                         <td>
+                            <label>{{ __('search about question') }}</label>
                             <input class="form-control" onkeyup="search(this.value, null, null)" placeholder="{{ __('search about question') }}" >
                         </td>
                         <td>
+                            <label>{{ __('categories') }}</label>
                             <select class="form-control select2 w3-block" onchange="search(null, this.value, null)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(Auth::user()->categories()->get() as $item)
@@ -134,6 +136,7 @@
                             </select> 
                         </td>
                         <td>
+                            <label>{{ __('question_types') }}</label>
                             <select class="form-control select2 w3-block" onchange="search(null, null, this.value)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(App\QuestionType::all() as $item)
@@ -256,6 +259,11 @@
     }
 
     function showSlide(slide) {  
+        if (slide == 2) {
+            if (!$('.course-select').val())
+                return error('{{ __("select course first") }}');
+        }
+        
         $(".slide").hide();
         $(".slide-" + slide).show();
     }
@@ -279,6 +287,7 @@
         $('#endDate').datetimepicker();
 
         formAjax(false, function (r) {
+            if (r.status == 1)
             showPage('exam/create');
         });
 

@@ -47,7 +47,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>{{ __('total') }} *</td>
+                    <td>{{ __('exam_total') }} *</td>
                     <td>
                         <input name="total" type="number" required="" class="form-control" value="{{ $exam->total }}"   >
                     </td>
@@ -271,6 +271,7 @@
         $('#endDate').datetimepicker();
 
         formAjax(false, function (r) {
+            if (r.status == 1)
             showPage('exam');
         });
 
