@@ -80,12 +80,12 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'1choice_' + index"  
-                            name="is_answer[][]" 
+                            name="true_false" 
                             checked=""
                             class="mulit_choice_answers question-answer"
                             value="1"
                             onchange="selectTrueFalse(this)" 
-                            type="checkbox"/>
+                            type="radio"/>
                         <label v-bind:for="'1choice_' + index" class="label-primary"></label>
                     </div> 
                 </td>
@@ -94,11 +94,11 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'2choice_' + index"  
-                            name="is_answer[][]" 
+                            name="true_false" 
                             class="mulit_choice_answers question-answer"
                             value="0"   
                             onchange="selectTrueFalse(this)"
-                            type="checkbox"/>
+                            type="radio"/>
                         <label v-bind:for="'2choice_' + index" class="label-primary"></label>
                     </div> 
                 </td>
