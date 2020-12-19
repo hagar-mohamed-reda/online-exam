@@ -12,6 +12,9 @@
             <td><b>{{ __('course') }} : </b>{{ optional($exam->course)->name }}</td>
             <td><b>{{ __('total grade') }} : </b>{{ $exam->total }}</td>
         </tr> 
+        <tr>
+            <td><b>{{ __('student') }} : </b>{{ optional($studentExam->student)->name }}</td>
+        </tr> 
     </table> 
     <br>
     <div class="text-center" >

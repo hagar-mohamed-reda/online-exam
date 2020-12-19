@@ -32,7 +32,7 @@ class StudentExamController extends Controller
     public function getData() {
         $exams = Student::exams(Auth::user()->id);
          
-        return DataTables::eloquent($exams)
+        return DataTables::eloquent($exams=>latest())
                         ->addColumn('action', function(Exam $exam) {
                             return view("student.exams.action", compact("exam"));
                         }) 

@@ -48,7 +48,7 @@
         <div class="col-lg-3 col-md-3 col-sm-6" >
             <label>{{ __('exams') }}</label>
             @if (Auth::user()->type == 'admin')
-            <select class="form-control select2"  v-model="search.exam_id" >
+            <select class="form-control select2" onchange="app.search.exam_id = this.value"  >
                 <option value="" >{{ __('select al') }}</option>
                 @foreach(App\Exam::all() as $item)
                 <option value="{{ $item->id }}" >{{ $item->name }} - {{ optional($item->course)->name }}</option>
