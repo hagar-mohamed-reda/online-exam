@@ -2,6 +2,10 @@
     
     <i class="fa fa-address-book-o w3-text-teal w3-button" onclick="showPage('exam/assign/{{ $exam->id }}')"  > {{ __('assign to students') }} </i>
     
+    @if ($exam->hasBlankAnswer())
+    <i class="fa fa-refresh w3-text-teal w3-button" onclick="showPage('exam/correct_blank/{{ $exam->id }}')"  > {{ __('correct blank answer') }} </i>
+    @endif
+    
     
     <i class="fa fa-desktop w3-text-green w3-button" onclick="edit('{{ url('/exam/show') . '/' . $exam->id }}', 'showModal', 'showModalPlace')" > {{ __('show') }} </i>
     

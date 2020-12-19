@@ -72,6 +72,10 @@
         /*font-family: 'Text Me One', sans-serif*/ 
     } 
     
+    .rtl {
+        direction: rtl;
+    }
+    
     body, html {
         direction: ltr;
     }

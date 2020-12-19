@@ -31,6 +31,14 @@ Route::group(["middleware" => "admin"], function() {
     Route::get("department/edit/{department}", "admin\DepartmentController@edit");
     Route::get("department/remove/{department}", "admin\DepartmentController@destroy");
     Route::post("department/update/{department}", "admin\DepartmentController@update");
+
+    // degreemap routes
+    Route::get("degreemap", "admin\DegreeMapController@index");
+    Route::post("degreemap/store", "admin\DegreeMapController@store");
+    Route::get("degreemap/data", "admin\DegreeMapController@getData");
+    Route::get("degreemap/edit/{degreemap}", "admin\DegreeMapController@edit");
+    Route::get("degreemap/remove/{degreemap}", "admin\DegreeMapController@destroy");
+    Route::post("degreemap/update/{degreemap}", "admin\DegreeMapController@update");
    
     // course routes
     Route::get("course", "admin\CourseController@index");

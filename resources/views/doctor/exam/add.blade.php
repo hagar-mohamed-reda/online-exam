@@ -49,13 +49,13 @@
                 <tr>
                     <td>{{ __('exam_total') }} *</td>
                     <td>
-                        <input name="total" type="number" required="" class="form-control"   >
+                        <input name="total" type="number" readonly="" class="form-control exam_total"   >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('question_number') }} *</td>
                     <td>
-                        <input name="question_number" type="number" required="" class="form-control"   >
+                        <input name="question_number" type="number" readonly="" class="form-control exam_questions"   >
                     </td>
                 </tr>
                 <tr>
@@ -107,6 +107,35 @@
                         <input name="password" type="password"   class="form-control"   >
                     </td>
                 </tr> 
+                <tr   >
+                    <td>{{ __('question_types') }}</td>
+                    <td> 
+                    </td>
+                </tr> 
+            </table>  
+            <table class="table table-bordered" >
+                <tr>
+                    <td>#</td>
+                    <td>{{ __('name') }}</td>
+                    <td>{{ __('question_number') }}</td>
+                    <td>{{ __('question_total') }}</td>
+                </tr>
+                
+                @foreach(App\QuestionType::all() as $item)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>
+                        {{ __($item->name) }}
+                        <input type="hidden" name="detail_question_type_id[]" value="{{ $item->id }}" >
+                    </td>
+                    <td>
+                        <input type="number" name="detail_number[]" onchange="calculateExamQuestions()" class="form-control input-sm question_number" >
+                    </td>
+                    <td>
+                        <input type="number" name="detail_total[]" onchange="calculateExamTotal()" class="form-control input-sm question_total" >
+                    </td>
+                </tr>
+                @endforeach
             </table>
 
 
@@ -148,15 +177,13 @@
                 </table>
                 <table class="table table-bordered" >
                     <tr class="text-right" >
-                        <th class="text-right" >{{ __('question') }}</th>
-                        <th class="text-right" >{{ __('question_grade') }}</th>
+                        <th class="text-right" >{{ __('question') }}</th> 
                         <th class="text-right" > 
                             {{ __('is selected') }}
                         </th>
                     </tr> 
                     <tr class="text-right" >
-                        <th class="text-right" >{{ __('select all') }}</th>
-                        <th class="text-right" ></th>
+                        <th class="text-right" >{{ __('select all') }}</th> 
                         <th class="text-right" > 
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
@@ -179,10 +206,7 @@
                         <td>
                             {{ $item->text }}
                             <input type="hidden" name="question_id[]" value="{{ $item->id }}" >
-                        </td>
-                        <td> 
-                            <input type="number" name="grade[]"  >
-                        </td>
+                        </td> 
                         <td>
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
@@ -225,6 +249,54 @@
         });
     }
     
+    function calculateExamTotal() {
+        var total = 0;
+        
+        $('.question_total').each(function(){
+            if (this.value)
+            total += parseFloat(this.value);
+        });
+        
+        $('.exam_total').val(total);
+    }
+    
+    function calculateExamQuestions() {
+        var numbers = 0;
+        
+        $('.question_number').each(function(){
+            if (this.value)
+            numbers += parseInt(this.value);
+        });
+        
+        $('.exam_questions').val(numbers);
+    }
+    
+    function validOnQuestionTypes() {
+        var valid = true;
+        var total = 0;
+        var numbers = 0;
+        
+        $('.question_total').each(function(){
+            total += this.value;
+        });
+        
+        $('.question_number').each(function(){
+            numbers += this.value;
+        });
+        
+        if (total <= 0) {
+            valid = false;
+            error('{{ __("please write the total of grade") }}');
+        }
+        
+        if (numbers <= 0) {
+            valid = false;
+            error('{{ __("please write the number of questions") }}');
+        }
+        
+        return valid;
+    }
+    
     function selectAll() {
         $('.question-row').each(function(){
             if ($(this).css("display") != "none") {
@@ -262,6 +334,9 @@
         if (slide == 2) {
             if (!$('.course-select').val())
                 return error('{{ __("select course first") }}');
+            
+            if (!validOnQuestionTypes())
+                return;
         }
         
         $(".slide").hide();

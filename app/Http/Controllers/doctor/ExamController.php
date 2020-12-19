@@ -15,6 +15,7 @@ use App\ExamQuestion;
 use App\StudentCourse;
 use App\DoctorCourse;
 use App\ExamAssign; 
+use App\ExamDetail; 
 use DB;
 use DataTables;
 
@@ -154,11 +155,24 @@ class ExamController extends Controller
             //$data["name"] = Course::find($request->course_id)->code . "-" . date('Y-m-d') . "-" . $request->name;
              
             $exam = Exam::create($data);  
+            // add exam types
+            for($index = 0; $index < count($request->detail_question_type_id); $index ++) {
+                if ($request->detail_number[$index] > 0) {
+                    ExamDetail::create([
+                        "exam_id" => $exam->id, 
+                        "question_type_id" => $request->detail_question_type_id[$index],  
+                        "number" => $request->detail_number[$index],  
+                        "grade" => $request->detail_total[$index],  
+                    ]);
+                }
+            }
+            
+            // add exam questions
             for($index = 0; $index < count($request->question_id); $index ++) {
                 if ($request->is_selected[$index] == 1) {
                     ExamQuestion::create([
                         "exam_id" => $exam->id, 
-                        "grade" => $request->grade[$index],  
+                        //"grade" => $request->grade[$index],  
                         "question_id" => $request->question_id[$index],  
                     ]);
                 }
@@ -208,6 +222,18 @@ class ExamController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function correctBlank(Exam $exam)
+    {
+        $showAnswer = 1;
+        return view("doctor.exam.correct_blank", compact("showAnswer", "exam"));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -234,6 +260,21 @@ class ExamController extends Controller
             $exam->update($request->all()); 
             
             // delete old and add new
+            $exam->details()->delete();
+            
+            // add exam types 
+            for($index = 0; $index < count($request->detail_question_type_id); $index ++) {
+                if ($request->detail_number[$index] > 0) {
+                    ExamDetail::create([
+                        "exam_id" => $exam->id, 
+                        "question_type_id" => $request->detail_question_type_id[$index],  
+                        "number" => $request->detail_number[$index],  
+                        "grade" => $request->detail_total[$index],  
+                    ]);
+                }
+            }
+            
+            // delete old and add new
             $exam->questions()->delete();
             
             // add new
@@ -241,7 +282,7 @@ class ExamController extends Controller
                 if ($request->is_selected[$index] == 1) {
                     ExamQuestion::create([
                         "exam_id" => $exam->id, 
-                        "grade" => $request->grade[$index],  
+                        //"grade" => $request->grade[$index],  
                         "question_id" => $request->question_id[$index],  
                     ]);
                 }
@@ -254,6 +295,7 @@ class ExamController extends Controller
             return Message::error(Message::$ERROR);
         }
     }
+ 
 
     /**
      * Remove the specified resource from storage.

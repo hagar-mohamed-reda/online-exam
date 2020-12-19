@@ -49,13 +49,13 @@
                 <tr>
                     <td>{{ __('exam_total') }} *</td>
                     <td>
-                        <input name="total" type="number" required="" class="form-control" value="{{ $exam->total }}"   >
+                        <input name="total" type="number" readonly="" class="form-control exam_total"   value="{{ $exam->total }}"   >
                     </td>
                 </tr>
                 <tr>
                     <td>{{ __('question_number') }} *</td>
                     <td>
-                        <input name="question_number" type="number" required="" class="form-control" value="{{ $exam->question_number }}"   >
+                        <input name="question_number" type="number" readonly="" class="form-control exam_questions" value="{{ $exam->question_number }}"   >
                     </td>
                 </tr> 
                 <tr>
@@ -97,6 +97,41 @@
                         <input name="password" type="password" value="{{ $exam->password }}"  class="form-control"   >
                     </td>
                 </tr> 
+                <tr   >
+                    <td>{{ __('question_types') }}</td>
+                    <td> 
+                    </td>
+                </tr> 
+            </table>  
+            <table class="table table-bordered" >
+                <tr>
+                    <td>#</td>
+                    <td>{{ __('name') }}</td>
+                    <td>{{ __('question_number') }}</td>
+                    <td>{{ __('question_total') }}</td>
+                </tr>
+                
+                @foreach(App\QuestionType::all() as $item)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>
+                        {{ __($item->name) }}
+                        <input type="hidden" name="detail_question_type_id[]" value="{{ $item->id }}" >
+                    </td>
+                    <td>
+                        <input type="number" name="detail_number[]" 
+                               value="{{ optional($exam->details()->where('question_type_id', $item->id)->first())->number }}"
+                               onchange="calculateExamQuestions()" 
+                               class="form-control input-sm question_number" >
+                    </td>
+                    <td>
+                        <input type="number" name="detail_total[]" 
+                               onchange="calculateExamTotal()" 
+                               value="{{ optional($exam->details()->where('question_type_id', $item->id)->first())->grade }}"
+                               class="form-control input-sm question_total" >
+                    </td>
+                </tr>
+                @endforeach
             </table>
 
 
@@ -214,6 +249,55 @@
         });
     }
     
+    function calculateExamTotal() {
+        var total = 0;
+        
+        $('.question_total').each(function(){
+            if (this.value)
+            total += parseFloat(this.value);
+        });
+        
+        $('.exam_total').val(total);
+    }
+    
+    function calculateExamQuestions() {
+        var numbers = 0;
+        
+        $('.question_number').each(function(){
+            if (this.value)
+            numbers += parseInt(this.value);
+        });
+        
+        $('.exam_questions').val(numbers);
+    }
+    
+    function validOnQuestionTypes() {
+        var valid = true;
+        var total = 0;
+        var numbers = 0;
+        
+        $('.question_total').each(function(){
+            total += this.value;
+        });
+        
+        $('.question_number').each(function(){
+            numbers += this.value;
+        });
+        
+        if (total <= 0) {
+            valid = false;
+            error('{{ __("please write the total of grade") }}');
+        }
+        
+        if (numbers <= 0) {
+            valid = false;
+            error('{{ __("please write the number of questions") }}');
+        }
+        
+        return valid;
+    }
+    
+    
     function selectAll() {
         $('.question-row').each(function(){
             if ($(this).css("display") != "none") {
@@ -248,6 +332,10 @@
     }
 
     function showSlide(slide) {  
+        if (slide == 2) { 
+            if (!validOnQuestionTypes())
+                return;
+        }
         $(".slide").hide();
         $(".slide-" + slide).show();
     }

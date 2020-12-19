@@ -14,6 +14,7 @@
         </tr> 
         <tr>
             <td><b>{{ __('student') }} : </b>{{ optional($studentExam->student)->name }}</td>
+            <td></td>
         </tr> 
     </table> 
     <br>

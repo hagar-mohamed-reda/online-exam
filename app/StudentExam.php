@@ -17,9 +17,22 @@ class StudentExam extends Model
         'is_started',
         'is_ended',
         'start_time',
-        'end_time'	
+        'end_time',
+        'degree_map_id'
     ];
     
+    protected $appends = [
+        'degree_map'
+    ];
+
+    public function getDegreeMapAttribute() {
+        $degree = $this->calculateDegreeMap();
+        $this->update([
+            "degree_map_id" => optional($degree)->id
+        ]);
+        return $degree;
+    }
+
     public function getGradeAttribute() {
         $grade = 0;
         foreach($this->studentAnswers()->get() as $item) {
@@ -31,6 +44,20 @@ class StudentExam extends Model
         ]);
         
         return $grade;
+    }
+    
+    public function getBlankQuestions() {
+        $ids =  $this->studentAnswers()
+                ->join('exam_questions', 'exam_questions.id', '=', 'question_id')
+                ->where('question_type_id', 4) 
+                ->pluck('question_id')
+                ->toArray();
+        return Question::whereIn('id', $ids)->get();
+    }
+    
+    public function calculateDegreeMap() {
+        $percent = (($this->grade) / optional($this->exam)->total) * 100;
+        return DegreeMap::where('percent_from', '<=', $percent)->where('percent_to', ">=", $percent)->first();
     }
     
     public function student() {

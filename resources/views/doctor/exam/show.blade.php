@@ -24,7 +24,7 @@
         <p>{{ $exam->question_number }}</p>
     </li>
     <li>
-        <b>{{ __('total') }}</b> <br>
+        <b>{{ __('exam_total') }}</b> <br>
         <p>{{ $exam->total }}</p>
     </li>
     <li>
@@ -50,6 +50,29 @@
     <li>
         <b>{{ __('password') }}</b> <br>
         <p>{{ $exam->password }}</p>
+    </li>
+     
+    
+    <li>
+        <b>{{ __('exam details') }}</b>  <br>
+        <table class="table table-bordered rtl" >
+            <tr> 
+                <th class="text-right" >{{ __('question_type') }}</th> 
+                <th class="text-right" >{{ __('question_number') }}</th> 
+                <th class="text-right" >{{ __('question_total') }}</th>  
+            </tr> 
+            @foreach($exam->details()->get() as $item)
+            <tr>
+                <td>{{ __(optional($item->questionType)->name) }}</td>
+                <td> 
+                    {{ $item->number }}
+                </td> 
+                <td> 
+                    {{ $item->grade }}
+                </td> 
+            </tr>
+            @endforeach
+        </table>
     </li>
      
     

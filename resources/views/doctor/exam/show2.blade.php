@@ -67,6 +67,21 @@
         </td>
     </tr>
 </table>
+
+<div style="padding: 5px" >
+    <table class="table table-border text-center" >
+        <tr>
+            @foreach(App\DegreeMap::all() as $item)
+            <th>{{ $item->key }}</th>
+            @endforeach
+        </tr>
+        <tr>
+            @foreach(App\DegreeMap::all() as $item)
+            <td>{{ $exam->studentExams()->where('degree_map_id', $item->id)->count() }}</td>
+            @endforeach
+        </tr>
+    </table>
+</div>
  
 <div class="row" >
     <div id="chart" class="col-lg-12" ></div>  

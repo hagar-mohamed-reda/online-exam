@@ -34,6 +34,12 @@
                 </a>
             </li>  
               
+            <li class="treeview font w3-text-indigo" onclick="showPage('degreemap')">
+                <a href="#">
+                    <i class="fa fa-percent"></i> <span>{{ __('degreemap') }}</span> 
+                </a>
+            </li>  
+              
             <li class="treeview font w3-text-indigo" onclick="showPage('department')">
                 <a href="#">
                     <i class="fa fa-bank"></i> <span>{{ __('department') }}</span> 

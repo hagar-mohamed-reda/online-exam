@@ -73,6 +73,9 @@ class StudentExamController extends Controller
                         ->addColumn('level', function(StudentExam $exam) {
                             return optional(optional($exam->student)->level)->name;
                         }) 
+                        ->editColumn('degree_map_id', function(StudentExam $exam) {
+                            return optional($exam->degree_map)->key;
+                        }) 
                         ->addColumn('department', function(StudentExam $exam) {
                             return optional(optional($exam->student)->department)->name;
                         })  
@@ -105,6 +108,34 @@ class StudentExamController extends Controller
             
             foreach($data->questions as $q) {
                 $studentQuestion = StudentAnswer::where('student_exam_id', $studentExam->id)->where('question_id', $q->question_id)->first();
+                
+                if ($studentQuestion)
+                $studentQuestion->update([
+                    "grade" => $q->grade
+                ]);
+            }
+            
+            
+            return Message::success(Message::$DONE);
+        } catch (Exception $ex) {
+            return Message::error(Message::$ERROR);
+        }
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function correctMultiExam(Request $request)
+    { 
+        try {
+            $data = json_decode($request->resource); 
+            
+            foreach($data->questions as $q) {
+                $studentQuestion = StudentAnswer::where('student_exam_id', $q->student_exam_id)
+                        ->where('question_id', $q->question_id)
+                        ->first();
                 
                 if ($studentQuestion)
                 $studentQuestion->update([

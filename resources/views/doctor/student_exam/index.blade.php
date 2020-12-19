@@ -83,6 +83,7 @@
             <th>{{ __('grade') }}</th> 
             <th>{{ __('start_time') }}</th> 
             <th>{{ __('end_time') }}</th> 
+            <th>{{ __('degree_map') }}</th> 
             <th></th>
         </tr>
     </thead> 
@@ -132,6 +133,7 @@
                 { "data": "grade" },
                 { "data": "start_time" },
                 { "data": "end_time" },
+                { "data": "degree_map_id" },
                 { "data": "action" },
             ]
          });
