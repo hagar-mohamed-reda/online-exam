@@ -35,7 +35,7 @@
             </li> 
             @if ($exam->can_delete)
             <li class="w3-hover-light-gray" style="cursor: pointer" onclick="remove('', '{{ url('/exam/remove/') .'/' . $exam->id }}')"  >
-                <span class="fa fa-trash w3-text-red" style="margin-left: 10px" ></span> {{ __('edit') }}
+                <span class="fa fa-trash w3-text-red" style="margin-left: 10px" ></span> {{ __('remove') }}
             </li> 
             @endif
             @endif
