@@ -93,7 +93,7 @@
     <button class="btn btn-success" onclick="approveExamResult()" >{{ __('show_result') }}</button>
     @endif
     
-    <button class="btn btn-danger"  onclick="showPage('exam/edit/{{ $exam->id }}')" >{{ __('edit_exam_questions') }}</button>
+    <button class="btn btn-danger" onclick="showPage('exam/recorrect/{{ $exam->id }}')">{{ __('edit_exam_questions') }}</button>
 </div>
  
 

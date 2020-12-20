@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notification;
 use App\helper\Message;
+use Illuminate\Support\Facades\Auth;
 
 use DataTables;
 class NotificationController extends Controller
@@ -42,9 +43,9 @@ class NotificationController extends Controller
     
     public function get() {
         try {
-            $notifications = Notification::where("seen", 0)->get();
+            $notifications = Notification::where("seen", 0)->where('user_id', Auth::user()->id)->get();
         
-            Notification::where("seen", 0)->update(["seen" => 1]);
+            Notification::where("seen", 0)->where('user_id', Auth::user()->id)->update(["seen" => 1]);
             foreach($notifications as $item) {
                 $item->body = "قام " . optional($item->user)->name . " => " . $item->body;
             }
