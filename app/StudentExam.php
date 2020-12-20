@@ -60,6 +60,7 @@ class StudentExam extends Model
     
     public function calculateDegreeMap() {
         $percent = (($this->grade) / optional($this->exam)->total) * 100;
+        $percent = intval($percent);
         return DegreeMap::where('percent_from', '<=', $percent)->where('percent_to', ">=", $percent)->first();
     }
     
