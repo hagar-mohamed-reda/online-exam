@@ -20,5 +20,14 @@ class StudentAnswer extends Model
     public function question() {
         return $this->belongsTo("App\Question", 'question_id');
     }
+    
+    public function studentExam() {
+        return $this->belongsTo("App\StudentExam", "student_exam_id");
+    }
+    
+    public function getExamQuestion() {
+        $q = $this->studentExam()->exam()->questions()->where('question_id', $this->question_id)->first();
+        return $q;
+    }
      
 }
