@@ -53,7 +53,7 @@ class QuestionController extends Controller
                             return optional($question->course)->name;
                         })
                         ->editColumn('category_id', function(Question $question) {
-                            return __(optional($question->category)->name);
+                            return optional($question->category)->name;
                         })
                         ->editColumn('doctor_id', function(Question $question) {
                             return __(optional($question->doctor)->name);
