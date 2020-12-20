@@ -25,6 +25,7 @@
                        @if (isset($showAnswer) && isset($studentExam))  
                        {{ 'readonly' }}
                        @endif 
+                       rows="4"
                        onkeyup="$('#questionChoiceNumber{{ $question->id }}').val(this.value)"  >@if (isset($showAnswer) && isset($studentExam)) {{ $question->getStudentAnswer($studentExam)  }} @endif</textarea> 
         
         @if (Auth::user()->type == 'doctor')
@@ -33,12 +34,13 @@
             $studentQuestion = $studentExam->studentAnswers()->where('question_id', $question->id)->first();
             $grade = $studentExam->questionGrade();
         @endphp
-        <div class="w3-display-topleft w3-padding" >
+        <div class="w3-display-topleft w3-padding shadow w3-white w3-round" style="left: 10px" >
             <input type="number" 
                    step="width: 100px"
+                   style="border: 2px dashed gray"
                    question-id="{{$question->id }}"
                    value="{{ optional($studentQuestion)->grade }}"
-                   class="doctor-blank-question"
+                   class="doctor-blank-question w3-round"
                    max-grade="{{ $grade }}"
                    max="{{ $grade }}" >
             / {{ $grade }}
