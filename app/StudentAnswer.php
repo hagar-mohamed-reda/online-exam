@@ -26,7 +26,7 @@ class StudentAnswer extends Model
     }
     
     public function getExamQuestion() {
-        $q = $this->studentExam()->exam()->questions()->where('question_id', $this->question_id)->first();
+        $q = $this->studentExam->exam->questions->where('question_id', $this->question_id)->first();
         return $q;
     }
      
