@@ -162,6 +162,10 @@ $(document).ready(function() {
      $(".btn-float").click(function(){
          showPage('question/create');
      });
+     
+     @if (Auth::user()->type != 'doctor') 
+        $('.floatbtn-place').remove();
+     @endif
         
 }); 
 </script>

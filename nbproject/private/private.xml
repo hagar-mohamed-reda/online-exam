@@ -11,6 +11,12 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/E:/project/online-exam/app/Http/Controllers/doctor/StudentExamController.php</file>
+            <file>file:/E:/project/online-exam/app/StudentExam.php</file>
+            <file>file:/E:/project/online-exam/app/Exam.php</file>
+            <file>file:/E:/project/online-exam/resources/views/doctor/student_exam/index.blade.php</file>
+            <file>file:/E:/project/online-exam/resources/views/doctor/exam/show2.blade.php</file>
+        </group>
     </open-files>
 </project-private>

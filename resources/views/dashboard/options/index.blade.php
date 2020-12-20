@@ -34,7 +34,7 @@
                     <center>
                         <span class="w3-large" >{{ __('blue sky night') }}</span>
                         <br>
-                        <input type="radio" name="theme" onclick="editSetting('id=3&value=skin-blue', this)" >
+                        <input type="radio" name="theme" onclick="editSetting('id=1&value=skin-blue', this)" >
                     </center>
                 </li>
                
@@ -43,7 +43,7 @@
                     <center>
                         <span class="w3-large" >{{ __('light sky') }}</span>
                         <br>
-                        <input type="radio" name="theme" onclick="editSetting('id=3&value=skin-blue-light', this)" >
+                        <input type="radio" name="theme" onclick="editSetting('id=1&value=skin-blue-light', this)" >
                     </center>
                 </li>
                 
@@ -52,7 +52,7 @@
                     <center>
                         <span class="w3-large" >{{ __('nature') }}</span>
                         <br>
-                        <input type="radio" name="theme" onclick="editSetting('id=3&value=skin-green-light', this)" >
+                        <input type="radio" name="theme" onclick="editSetting('id=1&value=skin-green-light', this)" >
                     </center>
                 </li>
                 
@@ -61,7 +61,7 @@
                     <center>
                         <span class="w3-large" >{{ __('colorfully') }}</span>
                         <br>
-                        <input type="radio" name="theme" onclick="editSetting('id=3&value=skin-dark-light', this)" >
+                        <input type="radio" name="theme" onclick="editSetting('id=1&value=skin-dark-light', this)" >
                     </center>
                 </li>
             </ul>
@@ -69,78 +69,21 @@
         </div> 
     </div> 
     <br>
-    
-    
-    <!-- langauge section -->
-    <div class="w3-white round shadow w3-animate-opacity table-responsive row">   
-        <div class="form-group w3-padding col-lg-12 col-md-12 col-sm-12">
-            <label class="w3-xlarge" for="email">{{ __('language') }}</label> 
-            <div class="w3-large w3-text-gray" >
-                {{ __('reload the page to see the changes') }}
-            </div>
-            <ul class="w3-ul row" >
-                
-                <li class=" col-lg-2 col-md-2 col-sm-2 w3-padding text-center" style="float: right" >
-                    <img src="{{ url('/image/flag/en_flag.png') }}" width="50px" height="50px" class="w3-circle" />
-                    <center>
-                        <span class="w3-large" >{{ __('english') }}</span>
-                        <br>
-                        <input type="radio" {{ App\Setting::find(7)->value == 'En'? 'checked' : '' }} name="theme" onclick="editSetting('id=7&value=En', this)" >
-                    </center>
-                </li>
-               
-                <li class=" col-lg-2 col-md-2 col-sm-2 w3-padding text-center" style="float: right" >
-                    <img src="{{ url('/image/flag/ar_flag.png') }}" width="50px" height="50px" class="w3-circle" />
-                    <center>
-                        <span class="w3-large" >{{ __('arabic') }}</span>
-                        <br>
-                        <input type="radio" {{ App\Setting::find(7)->value == 'Ar'? 'checked' : '' }} name="theme" onclick="editSetting('id=7&value=Ar', this)" >
-                    </center>
-                </li> 
-            </ul>
-            <input type="hidden" id="theme" >
-        </div> 
-    </div> 
-    <br>
-    
-    <!-- email section -->
-    <div class="w3-white round shadow w3-animate-opacity table-responsive row"> 
-        <div class="form-group w3-padding col-lg-10 col-md-10 col-sm-10">
-            <label class="w3-xlarge" for="email">{{ __('email') }}</label>
-            <div class="w3-large w3-text-gray" >
-               {{ __('this is the email whick the message will be sent with it') }}
-            </div>
-            <input  
-                type="text" 
-                class="form-control" 
-                id="email" 
-                value="{{ App\Setting::find(1)->value }}"
-                placeholder="email">
-        </div>  
-        <div class="form-group w3-padding col-lg-2 col-md-2 col-sm-2">
-            <button class="btn w3-indigo shadow btn-sm" onclick="editSetting('id=1&value='+$('#email').val(), this)" >
-                <i class="fa fa-check" ></i> {{ __('save') }}
-            </button>
-        </div>
-    </div> 
-    <br>
+   
     
     <!-- title section -->
     <div class="w3-white round shadow w3-animate-opacity table-responsive row">
         <div class="form-group w3-padding col-lg-10 col-md-10 col-sm-10">
-            <label class="w3-xlarge" for="title">{{ __('period between two sheet for customer') }}</label>
-             
-            <input  
-                type="text" 
-                class="form-control" 
-                id="sheet_period" 
-                value="{{ App\Setting::find(9)->value }}"
-                placeholder="website title">
+            <label class="w3-xlarge" for="title">{{ __('open or block change result of exams for doctors') }}</label>
         </div>   
         <div class="form-group w3-padding col-lg-2 col-md-2 col-sm-2">
-            <button class="btn w3-indigo shadow btn-sm" onclick="editSetting('id=9&value='+$('#sheet_period').val(), this)" >
+             <div class="material-switch pull-right w3-margin-top">
+              <input id="courseSwitch1" name="assign[]" onchange="editSetting('id=9&value='+(this.checked ? 1 : 0), this)" value="{{ optional(App\Setting::find(3))->value }}" type="checkbox">
+              <label for="courseSwitch1" class="label-primary"></label>
+             </div> 
+<!--            <button class="btn w3-indigo shadow btn-sm" onclick="editSetting('id=9&value='+$('#sheet_period').val(), this)" >
                 <i class="fa fa-check" ></i> {{ __('save') }}
-            </button>
+            </button>-->
         </div>
     </div> 
     <br>
@@ -154,7 +97,7 @@
             <div class="w3-large w3-text-gray" >
                {{ __('you can translate each word in English or Arabic') }}
             </div>
-            <table class="table table-bordered" >
+            <table class="table table-bordered" style="direction: rtl" >
                 <tr>
                     <th>{{ __('key') }}</th>
                     <th>{{ __('word in English') }}</th>
@@ -202,7 +145,7 @@
 <script>
     function editSetting(values, button) {
         $(button).html('<i class="fa fa-spin fa-spinner" ></i>');
-        $.get('{{ url("/dashboard/option/update?") }}' + values, function (r) {
+        $.get('{{ url("/option/update?") }}' + values, function (r) {
             if (r.status == 1) {
                 success(r.message);
                 $(button).html(' <i class="fa fa-check" ></i> {{ __('save') }}');
@@ -211,7 +154,7 @@
                 $(button).html(' <i class="fa fa-check" ></i> {{ __('save') }}');
             }
             
-            if (values.indexOf("id=3") >= 0 || values.indexOf("id=7") >= 0)
+            if (values.indexOf("id=1") >= 0 || values.indexOf("id=1") >= 0)
                 window.location.reload();
         });
     }
@@ -236,7 +179,7 @@
             _token: '{{ csrf_token() }}'
         };
         
-        $.post('{{ url("/dashboard/translation/update?") }}', $.param(data), function(r){
+        $.post('{{ url("/translation/update?") }}', $.param(data), function(r){
             if (r.status == 1) {
                 success(r.message); 
             } else {

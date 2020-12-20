@@ -11,4 +11,17 @@ class Setting extends Model
     protected $fillable = [
         'name',	'value'	 
     ];
+    
+    public static function getSetting($id) {
+        $setting = Setting::find($id);
+        if (!$setting)
+            $setting::create([
+                "id" => $id,
+                "name" => "-",
+                "value" => "-"
+            ]);
+        
+        return $setting;
+    }
+    
 }

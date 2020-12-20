@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class StudentExam extends Model
 {
@@ -35,15 +36,17 @@ class StudentExam extends Model
 
     public function getGradeAttribute() {
         $grade = 0;
+        $oldGrade = optional(DB::table('exam_student_exams')->find($this->id))->grade;
         foreach($this->studentAnswers()->get() as $item) {
             $grade += $item->grade;
         }
         
+        if ($oldGrade < $grade)
         $this->update([
             "grade" => $grade
         ]);
         
-        return $grade;
+        return $oldGrade > $grade ? $oldGrade : $grade;
     }
     
     public function getBlankQuestions() {

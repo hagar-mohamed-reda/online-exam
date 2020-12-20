@@ -16,6 +16,7 @@ use App\StudentCourse;
 use App\DoctorCourse;
 use App\ExamAssign; 
 use App\ExamDetail; 
+use App\StudentExam; 
 use DB;
 use DataTables;
 
@@ -30,6 +31,16 @@ class ExamController extends Controller
     public function index()
     {
         return view("doctor.exam.index");
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function recorrect(Exam $exam)
+    {
+        return view("doctor.exam.correct", compact("exam"));
     }
 
     /**
@@ -296,6 +307,34 @@ class ExamController extends Controller
         }
     }
  
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function performRecorrect(Request $request)
+    { 
+        try {
+            $data = json_decode($request->resource); 
+             
+            foreach($data as $q) {
+                $studentExam = StudentExam::find($q->student_exam_id);
+                 
+                if ($studentExam) {
+                    $studentExam->update([
+                        "grade" => $q->grade
+                    ]);
+                }
+            } 
+            
+            return Message::success(Message::$DONE);
+        } catch (Exception $ex) {
+            return Message::error(Message::$ERROR);
+        }
+    }
+    
 
     /**
      * Remove the specified resource from storage.

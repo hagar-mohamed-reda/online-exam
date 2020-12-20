@@ -27,6 +27,14 @@ class SettingController extends Controller
                 session(["locale" => $request->value]);
             
             $option = Setting::find($request->id);
+            if (!$option)
+                $option = Setting::create([
+                    "id" => $request->id,
+                    "name" => "-",
+                    "value" => $request->value,
+                ]);
+            
+            
             $option->value = $request->value;
             $option->update();
 

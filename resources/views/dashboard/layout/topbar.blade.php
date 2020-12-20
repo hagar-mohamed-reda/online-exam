@@ -40,7 +40,7 @@
                             <ul class="menu">
                                 <li><!-- start notification -->
                                     <a href="#">
-                                        <i v-bind:class="notification.icon + ' w3-text-teal'"></i> <span  v-html="notification.message"  ></span> 
+                                        <i v-bind:class="notification.icon + ' w3-text-teal'"></i> <span  v-html="notification.body"  ></span> 
                                     </a>
                                 </li>
                                 <!-- end notification -->

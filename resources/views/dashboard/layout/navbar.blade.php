@@ -91,6 +91,12 @@
                 </a>
             </li>  
              
+            <li class="treeview font w3-text-indigo" onclick="showPage('option')">
+                <a href="#">
+                    <i class="fa fa-cogs"></i> <span>{{ __('option') }}</span> 
+                </a>
+            </li>  
+             
             @elseif (Auth::user()->type == 'doctor')   
               
             <li class="treeview font w3-text-indigo" onclick="showPage('category')">
