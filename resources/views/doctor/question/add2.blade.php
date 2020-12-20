@@ -80,7 +80,7 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'1choice_' + index"  
-                            name="true_false" 
+                            v-bind:name=" 'true_false' + index " 
                             checked=""
                             class="mulit_choice_answers question-answer"
                             value="1"
@@ -94,7 +94,7 @@
                     <div class="material-switch w3-display-topleft w3-padding">
                         <input 
                             v-bind:id="'2choice_' + index"  
-                            name="true_false" 
+                            v-bind:name=" 'true_false' + index " 
                             class="mulit_choice_answers question-answer"
                             value="0"   
                             onchange="selectTrueFalse(this)"
