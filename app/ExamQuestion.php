@@ -18,7 +18,7 @@ class ExamQuestion extends Model
     ]; 
     
     public function getExamGradeAttribute() {
-        $examCategory = $this->exam()->details()->where('question_type_id', $this->question->question_type_id)->first();
+        $examCategory = $this->exam()->details()->where('question_type_id', optional($this->question)->question_type_id)->first();
         $grade = optional($examCategory)->grade / optional($examCategory)->number;
         return $grade;
     }
