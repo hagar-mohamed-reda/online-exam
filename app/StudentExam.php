@@ -69,7 +69,7 @@ class StudentExam extends Model
     }
     
     public function exam() {
-        return $this->belongsTo("App\Exam");
+        return $this->belongsTo("App\Exam", "exam_id");
     }
     
     public function studentAnswers() {

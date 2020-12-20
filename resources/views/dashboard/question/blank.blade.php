@@ -32,7 +32,7 @@
         @if (isset($studentExam))
         @php
             $studentQuestion = $studentExam->studentAnswers()->where('question_id', $question->id)->first(); 
-            $grade = $studentQuestion->getQuestionOfExamGrade;
+            $grade = $studentQuestion->getQuestionOfExamGrade();
         @endphp
         <div class="w3-display-topleft w3-padding shadow w3-white w3-round" style="left: 10px" >
             <input type="number" 

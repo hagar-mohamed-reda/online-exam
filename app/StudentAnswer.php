@@ -21,12 +21,12 @@ class StudentAnswer extends Model
         return $this->belongsTo("App\Question", 'question_id');
     }
     
-    public function studentExam() {
-        return $this->belongsTo("App\StudentExam", "student_exam_id");
+    public function StudentExam() {
+        return $this->belongsTo("App\StudentExam");
     }
     
     public function getQuestionOfExamGrade() {
-        $examCategory = $this->studentExam()->exam()->details()->where('question_type_id', optional($this->question)->question_type_id)->first();
+        $examCategory = $this->studentExam->exam->details()->where('question_type_id', optional($this->question)->question_type_id)->first();
         $grade = optional($examCategory)->grade / optional($examCategory)->number;
         return $grade;
     }
