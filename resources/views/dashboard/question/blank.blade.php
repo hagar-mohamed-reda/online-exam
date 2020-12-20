@@ -15,6 +15,10 @@
             </div> 
         </div> 
         <div class="col-lg-6 col-md-6 col-sm-12 text-right w3-display-container" style="text-align: right!important" > 
+            
+                @if ($question->photo)
+                <br>
+                @endif
                 <textarea    
                        name="checked-number-{{ $question->id }}" 
                        class="form-control" 
