@@ -21,6 +21,7 @@
 @endphp  
 
 @section("content")
+<div class="table-responsive" >
 <table class="table table-bordered" id="table" >
     <thead>
         <tr>
@@ -36,6 +37,7 @@
         
     </tbody>
 </table>
+</div>
 
 @endsection
 
