@@ -13,6 +13,7 @@ use App\Student;
 use App\Exam;
 use App\Question;
 use App\StudentAnswer;
+use App\ExamQuestion;
 use DB;
 use DataTables;
 
@@ -113,16 +114,21 @@ class ExamRoomController extends Controller {
             // delete old 
             $studentExam->studentAnswers()->delete();
             
+            
             // add new
             $totalGrade = 0;
             foreach ($data->questions as $q) {
                 $question = Question::find($q->question_id);
+                //$examQuestion = ExamQuestion::where('question_id', $q->question_id)->where('exam_id', $exam->id)->first();
                 $examQuestion = $question->getExamQuestion($exam);
+                //return $examQuestion;
                 $grade = 0;
                 $answerId = 0;
                 if ($q->answer == $question->answer) {
-                    $grade = optional($examQuestion)->grade;
+                    $grade = optional($examQuestion)->exam_grade;
                     $answerId = optional($question->answer_choice)->id;
+                    
+                    //return $grade = optional($examQuestion)->exam_grade;
                 }
                 
                 if ($question->question_type_id == 4) {
