@@ -16,7 +16,7 @@
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper  "   >  
-                    <div class="frame w3-padding" style="overflow: auto"  ></div> 
+                    <div class="frame w3-padding table-responsive" style="overflow: auto"  ></div> 
             </div>
 
 
