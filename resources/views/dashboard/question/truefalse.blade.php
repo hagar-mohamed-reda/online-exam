@@ -11,11 +11,9 @@
     </div>
     <br>
     
-    <div class="w3-display-topleft" >
-        <table class='w3-table' >
-            <tr>
+    <div class="row" >
                 @foreach($question->questionChoices()->get() as $item)
-                <td>
+                <div class="col-lg-6 col-md-6 col-sm-6" >
                     {{ $item->text }}  
                     <input type="radio" 
                            value="{{ $item->text }}" 
@@ -26,9 +24,8 @@
                             @endif 
                            class="w3-check" 
                            onclick="$('#questionChoiceNumber{{ $question->id }}').val(this.value)"  >
-                </td> 
+                </div> 
                 @endforeach
-            </tr> 
-        </table>
     </div>
+    
 </div>
