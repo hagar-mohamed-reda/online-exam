@@ -28,6 +28,15 @@ class Doctor extends Model {
     }
     
     /**
+     * return courses of the user
+     * 
+     * @return DoctorCourse
+     */
+    public function courses() {
+        return $this->hasMany('App\DoctorCourse');
+    }
+    
+    /**
      * return questions of the user
      * 
      * @return Question
