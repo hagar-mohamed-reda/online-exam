@@ -31,6 +31,10 @@
                 </span>
             </td>
         </tr>
+        <tr>
+            <td><b>{{ __('exam') }} : </b>{{ $exam->name }}</td>
+            <td></td>
+        </tr>
     </table> 
     <br>
     <div class="text-center" >
