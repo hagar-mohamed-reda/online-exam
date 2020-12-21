@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\helper\ViewBuilder;
+use Illuminate\Support\Facades\Auth;
 
 class Student extends Model
 {
@@ -89,6 +90,12 @@ class Student extends Model
                 ->where("end_time", ">=", $currentTime);
         
         return $exams;
+    }
+    
+    public function examsQuery() {
+        $ids = $this->studentExams()->where('is_ended', '1')->pluck('exam_id')->toArray();
+        $query = $this->exams()->whereNotIn('exam_exams.id', $ids);
+        return $query;
     }
       
     

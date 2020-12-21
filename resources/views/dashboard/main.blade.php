@@ -22,7 +22,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">{{ __('exams room') }}</span>
-                    <span class="info-box-number">{{ Auth::user()->toStudent()->exams()->count() }}</span>
+                    <span class="info-box-number">{{ Auth::user()->toStudent()->examsQuery()->count() }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </a>
@@ -143,10 +143,10 @@
   
         <!-- /.col -->
     </div>
-    <div class="row">
+    <div class="w3-block">
         
         @if (Auth::user()->type == 'student')
-        <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="w3-block">
             
             <div class="shadow w3-round box">
                 <div class="box-header with-border">
@@ -160,7 +160,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" style="padding: 5px!important" >
-                    <div id="chart_div3" style="width: 90%" ></div> 
+                    <div id="chart_div3" style="width: 100%" ></div> 
                 </div>
                 <!-- ./box-body -->
                 <div class="box-footer"> 
@@ -175,7 +175,7 @@
         
         
         @if (Auth::user()->type == 'doctor' || Auth::user()->type == 'admin')
-        <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="w3-block">
             
             <div class="shadow w3-round box">
                 <div class="box-header with-border">
@@ -189,7 +189,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" style="padding: 5px!important" >
-                    <div id="chart_class" style="width: 90%" ></div> 
+                    <div id="chart_class" style="width: 100%" ></div> 
                 </div>
                 <!-- ./box-body -->
                 <div class="box-footer"> 

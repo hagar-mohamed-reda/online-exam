@@ -23,7 +23,7 @@
         </a>
 
         <div class="navbar-custom-menu" style="margin-right: 230px" id="topbarDiv" >
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" style="padding: 0px!important" >
 
 
                 <!-- Notifications Menu -->
@@ -55,7 +55,8 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="{{ url('/') }}/image/user.png" width="30px" class="user-image"  >  
+                        <img src="{{ url('/') }}/image/user.png" width="30px" class="user-image w3-hide-small"  >  
+                        <i class="fa fa-user-circle w3-text-white w3-hide-large w3-hide-medium" ></i>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                         <span class="hidden-xs">{{ Auth::user()->name }}</span>
                     </a>
