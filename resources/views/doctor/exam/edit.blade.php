@@ -112,7 +112,7 @@
                 </tr>
                 
                 @foreach(App\QuestionType::all() as $item)
-                <tr>
+                <tr class="question_type_row" >
                     <td>{{ $loop->iteration }}</td>
                     <td>
                         {{ __($item->name) }}
@@ -273,26 +273,22 @@
     
     function validOnQuestionTypes() {
         var valid = true;
-        var total = 0;
-        var numbers = 0;
         
-        $('.question_total').each(function(){
-            total += this.value;
+        $('.question_type_row').each(function(){
+            var number = $(this).find('.question_number').val();
+            var total = $(this).find('.question_total').val();
+            
+            if ( ((number > 0) && (total <= 0))) {
+                error('{{ __("please write the total of questions") }}');
+                valid = false;
+            }
+            
+            if (((number <= 0) && (total > 0)) ) {
+                error('{{ __("please write the number of questions") }}');
+                valid = false;
+            }
         });
-        
-        $('.question_number').each(function(){
-            numbers += this.value;
-        });
-        
-        if (total <= 0) {
-            valid = false;
-            error('{{ __("please write the total of grade") }}');
-        }
-        
-        if (numbers <= 0) {
-            valid = false;
-            error('{{ __("please write the number of questions") }}');
-        }
+          
         
         return valid;
     }
