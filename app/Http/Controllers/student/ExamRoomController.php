@@ -121,7 +121,7 @@ class ExamRoomController extends Controller {
                 $grade = 0;
                 $answerId = 0;
                 if ($q->answer == $question->answer) {
-                    $grade = optional($examQuestion)->grade > 0 ? optional($examQuestion)->grade : $questionGrade;
+                    $grade = optional($examQuestion)->grade;
                     $answerId = optional($question->answer_choice)->id;
                 }
                 
