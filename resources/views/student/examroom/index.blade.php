@@ -43,7 +43,8 @@
     
     @foreach($exam->getQuestions() as $category) 
     <div class="w3-large" >
-        {{ $loop->iteration }}) {{ $category->name }}
+        {{ $loop->iteration }})  
+        {!! $category->notes !!}
     </div>
     <br>
     <div class="w3-block" style="padding: 7px;border-bottom: 2px dashed gray" >

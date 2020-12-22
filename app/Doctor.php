@@ -59,6 +59,15 @@ class Doctor extends Model {
      * 
      * @return Category
      */
+    public function hardLevels() {
+        return $this->hasMany('App\HardLevel', 'doctor_id')->latest();
+    }
+    
+    /**
+     * return categories of the user
+     * 
+     * @return Category
+     */
     public function exams() {
         return $this->hasMany('App\Exam', 'doctor_id')->latest();
     }

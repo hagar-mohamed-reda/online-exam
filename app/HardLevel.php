@@ -8,20 +8,19 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\helper\ViewBuilder;
  
-class Category extends Model
-{
-    use SoftDeletes;
+class HardLevel extends Model
+{ 
 
-    protected $table = "exam_categories";
+    protected $table = "exam_hard_levels";
 
     protected $fillable = [
-        'name',	'notes', 'doctor_id'
+        'name', 'doctor_id'
     ]; 
     
     public $appends = ['can_delete'];
     
     public function getCanDeleteAttribute() {
-        return Question::where('category_id', $this->id)->exists() ? false : true;
+        return Question::where('hard_level_id', $this->id)->exists() ? false : true;
     }
     
     public function doctor() {
@@ -36,13 +35,12 @@ class Category extends Model
     public function getViewBuilder() {
         $builder = new ViewBuilder($this, "rtl");
  
-        
-        $builder->setAddRoute(url('/category/store'))
-                ->setEditRoute(url('/category/update') . "/" . $this->id)
+        $builder->setAddRoute(url('/hardlevel/store'))
+                ->setEditRoute(url('/hardlevel/update') . "/" . $this->id)
                 ->setCol(["name" => "id", "label" => __('id'), "editable" => false ])
                 ->setCol(["name" => "name", "label" => __('name'), "type" => "textarea",  "col" => 'col-lg-12 col-md-12 col-sm-12'])
-                //->setCol(["name" => "notes", "label" => __('notes'), "type" => "textarea", "required" => false, "col" => 'col-lg-12 col-md-12 col-sm-12'])
-                ->setUrl(url('/images/category'))
+                ->setCol(["name" => "notes", "label" => __('notes'), "type" => "textarea", "required" => false, "col" => 'col-lg-12 col-md-12 col-sm-12'])
+                ->setUrl(url('/images/hardlevel'))
                 ->build();
 
         return $builder;

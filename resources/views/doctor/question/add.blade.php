@@ -93,6 +93,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>{{ __('hardlevel') }} *</td>
+                    <td>
+                        <select class="form-control select2 w3-block" name="hard_level_id" >
+                            @foreach(Auth::user()->toDoctor()->hardLevels()->get() as $item)
+                            <option value="{{ optional($item)->id }}" >{{ optional($item)->name }}</option>
+                            @endforeach
+                        </select> 
+                    </td>
+                </tr>
+                <tr>
                     <td>{{ __('active') }} </td>
                     <td>  
                         <div class="material-switch pull-right w3-margin-top">

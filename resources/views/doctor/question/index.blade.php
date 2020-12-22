@@ -10,8 +10,7 @@
 <div id="filter2" >
     <div class="row" >
         <div class="col-lg-3 col-md-3 col-sm-6" >
-            <label>{{ __('course') }}</label>
-            
+            <label>{{ __('course') }}</label> 
             @if (Auth::user()->type == 'doctor')
             <select class="form-control" name="course_id" v-model="search.course_id" >
                 <option value="" >{{ __('select al') }}</option>
@@ -38,6 +37,15 @@
             </select>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6" >
+            <label>{{ __('hardlevels') }}</label>
+            <select class="form-control" v-model="search.hard_level_id" >
+                <option value="" >{{ __('select al') }}</option>
+                @foreach(Auth::user()->toDoctor()->hardLevels()->get() as $item)
+                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6" >
             <label>{{ __('question_types') }}</label>
             <select class="form-control"  v-model="search.question_type_id" >
                 <option value="" >{{ __('select al') }}</option>
@@ -45,7 +53,7 @@
                 <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
                 @endforeach
             </select>
-        </div> 
+        </div>  
         <div class="col-lg-3 col-md-3 col-sm-6" >
             <label></label> 
             <br>
@@ -69,6 +77,7 @@
             <th>{{ __('type') }}</th>   
             <th>{{ __('active') }}</th>   
             <th>{{ __('category') }}</th>   
+            <th>{{ __('hardlevel') }}</th>   
             <th>{{ __('is_sharied') }}</th>
             <th>{{ __('photo') }}</th>
     @if (Auth::user()->type == 'admin')    
@@ -148,6 +157,7 @@ $(document).ready(function() {
             { "data": "question_type_id" },   
             { "data": "active" },   
             { "data": "category_id" },   
+            { "data": "hard_level_id" },   
             { "data": "is_sharied" },   
             { "data": "photo" },   
     @if (Auth::user()->type == 'admin') 

@@ -11,7 +11,7 @@
                 <br>
                 @endif
                 <input type="hidden" name="question_id[]" class="question_id" value="{{ $question->id }}" >
-                <input type="hidden" name="answer_id[]" class="answer_id"  id="questionChoiceNumber{{ $question->id }}" >
+                <input type="hidden" name="answer_id[]" class=""  id="questionChoiceNumber{{ $question->id }}" >
             </div> 
         </div> 
         <div class="col-lg-6 col-md-6 col-sm-12 text-right w3-display-container" style="text-align: right!important" > 
@@ -21,7 +21,7 @@
                 @endif
                 <textarea    
                        name="checked-number-{{ $question->id }}" 
-                       class="form-control" 
+                       class="form-control answer_id" 
                        @if (isset($showAnswer) && isset($studentExam))  
                        {{ 'readonly' }}
                        @endif 

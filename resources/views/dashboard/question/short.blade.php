@@ -26,5 +26,5 @@
                        onkeyup="$('#questionChoiceNumber{{ $question->id }}').val(this.value)"  >
         </div>
         @endforeach 
-    </div>
+    </div> 
 </div>

@@ -18,6 +18,7 @@ class Question extends Model
         'category_id',
         'course_id',	
         'doctor_id',
+        'hard_level_id',
         'default_grade',
         'is_sharied',
         'active',
@@ -57,6 +58,10 @@ class Question extends Model
         return $this->belongsTo("App\Category");
     }
     
+    public function hardLevel() {
+        return $this->belongsTo("App\HardLevel");
+    }
+    
     public function doctor() {
         return $this->belongsTo("App\Doctor");
     }
@@ -66,7 +71,7 @@ class Question extends Model
     }
     
     public function getStudentAnswer($studentExam) {
-        $resource = $studentExam->studentAnswers()->where('question_id', $this->id)->first();
+        $resource = $studentExam->studentAnswers()->where('question_id', $this->id)->first(); 
         return optional($resource)->answer;
     }
     

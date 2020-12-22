@@ -13,10 +13,9 @@ class ExamDetail extends Model
         'question_type_id', 'number', 'grade', 'exam_id'
     ]; 
 
-   
     
     public function questionType() {
-        return $this->belongsTo("App\QuestionType", 'question_type_id');
+        return $this->belongsTo("App\HardLevel", 'question_type_id');
     }
     
     public function exam() {

@@ -45,6 +45,8 @@
 <script src="{{ url('/') }}/js/bootstrap-datetimepicker.ar.js"></script> 
 <script src="{{ url('/') }}/js/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ url('/') }}/js/vue.js"></script> 
+<script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
+
 <script src="{{ url('/') }}/js/app.js"></script> 
 <script>
 function myFunction() {

@@ -111,7 +111,7 @@
                     <td>{{ __('question_total') }}</td>
                 </tr>
                 
-                @foreach(App\QuestionType::all() as $item)
+                @foreach(Auth::user()->toDoctor()->hardLevels()->get() as $item)
                 <tr class="question_type_row" >
                     <td>{{ $loop->iteration }}</td>
                     <td>
@@ -148,10 +148,12 @@
                 <table class="table table-bordered">
                     <tr>
                         <td>
-                            <input class="form-control" onkeyup="search(this.value, null, null)" placeholder="{{ __('search about question') }}" >
+                            <label>{{ __('search about question') }}</label>
+                            <input class="form-control" onkeyup="search(this.value, null, null, null)" placeholder="{{ __('search about question') }}" >
                         </td>
                         <td>
-                            <select class="form-control select2 w3-block" onchange="search(null, this.value, null)"  >
+                            <label>{{ __('categories') }}</label>
+                            <select class="form-control select2 w3-block" onchange="search(null, this.value, null, null)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(Auth::user()->categories()->get() as $item)
                                 <option value="{{ $item->id }}" >{{ $item->name }}</option>
@@ -159,7 +161,17 @@
                             </select> 
                         </td>
                         <td>
-                            <select class="form-control select2 w3-block" onchange="search(null, null, this.value)"  >
+                            <label>{{ __('hardlevels') }}</label>
+                            <select class="form-control select2 w3-block" onchange="search(null, null, null, this.value)"  >
+                                <option value="" >{{ __('select all') }}</option>
+                                @foreach(Auth::user()->toDoctor()->hardLevels()->get() as $item)
+                                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                                @endforeach
+                            </select> 
+                        </td>
+                        <td>
+                            <label>{{ __('question_types') }}</label>
+                            <select class="form-control select2 w3-block" onchange="search(null, null, this.value, null)"  >
                                 <option value="" >{{ __('select all') }}</option>
                                 @foreach(App\QuestionType::all() as $item)
                                 <option value="{{ $item->id }}" >{{ __($item->name) }}</option>
@@ -170,15 +182,13 @@
                 </table>
                 <table class="table table-bordered" >
                     <tr class="text-right" >
-                        <th class="text-right" >{{ __('question') }}</th>
-                        <th class="text-right" >{{ __('question_grade') }}</th>
+                        <th class="text-right" >{{ __('question') }}</th> 
                         <th class="text-right" > 
                             {{ __('is selected') }}
                         </th>
                     </tr> 
                     <tr class="text-right" >
-                        <th class="text-right" >{{ __('select all') }}</th>
-                        <th class="text-right" ></th>
+                        <th class="text-right" >{{ __('select all') }}</th> 
                         <th class="text-right" > 
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
@@ -194,6 +204,7 @@
                         
                         data-search="{{ $item->text }}-{{ optional($item->category)->name }}"
                         data-category="{{ $item->category_id }}" 
+                        data-hardlevel="{{ $item->hard_level_id }}" 
                         data-course="{{ $item->course_id }}" 
                         data-type="{{ $item->question_type_id }}"
                         style="display: none"
@@ -201,10 +212,7 @@
                         <td>
                             {{ $item->text }}
                             <input type="hidden" name="question_id[]" value="{{ $item->id }}" >
-                        </td>
-                        <td> 
-                            <input type="number" name="grade[]" value="{{ optional($item->getExamQuestion($exam))->grade }}"  >
-                        </td>
+                        </td> 
                         <td>
                             <div class="material-switch pull-right w3-margin-top">
                                 <input 
@@ -302,7 +310,7 @@
         });
     }
     
-    function search(key, category, type) {
+    function search(key, category, type, hardlevel) {
         if (key) {
             $(".question-row").hide();
             $(".question-row").each(function () {
@@ -314,6 +322,10 @@
         else if (category) {
             $(".question-row").hide();
             $(".question-row[data-category=" + category + "]").show();
+        }
+        else if (hardlevel) {
+            $(".question-row").hide();
+            $(".question-row[data-hardlevel=" + hardlevel + "]").show();
         }
         else if (type) {
             $(".question-row").hide();

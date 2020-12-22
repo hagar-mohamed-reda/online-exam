@@ -26,7 +26,7 @@ class StudentAnswer extends Model
     }
     
     public function getQuestionOfExamGrade() {
-        $examCategory = $this->studentExam->exam->details()->where('question_type_id', optional($this->question)->question_type_id)->first();
+        $examCategory = $this->studentExam->exam->details()->where('question_type_id', optional($this->question)->hard_level_id)->first();
         $grade = optional($examCategory)->grade / optional($examCategory)->number;
         return $grade;
     }

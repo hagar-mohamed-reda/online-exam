@@ -8,11 +8,11 @@ use \Illuminate\Support\Facades\Auth;
  
 use App\helper\Message;
 use App\helper\Helper;
-use App\Category; 
+use App\HardLevel; 
 use DB;
 use DataTables;
 
-class CategoryController extends Controller
+class HardLevelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view("doctor.category.index");
+        return view("doctor.hardlevel.index");
     }
 
     /**
@@ -30,17 +30,17 @@ class CategoryController extends Controller
     public function getData() {
         $query = null;
         if (Auth::user()->type == 'admin')
-            $query = Category::query();
+            $query = HardLevel::query();
         else
-            $query = Category::where('doctor_id', Auth::user()->fid);
+            $query = HardLevel::where('doctor_id', Auth::user()->fid);
         
         
         return DataTables::eloquent($query->latest())
-                        ->addColumn('action', function(Category $category) {
-                            return view("doctor.category.action", compact("category"));
+                        ->addColumn('action', function(HardLevel $hardlevel) {
+                            return view("doctor.hardlevel.action", compact("hardlevel"));
                         }) 
-                        ->editColumn('doctor_id', function(Category $category) {
-                            return optional($category->doctor)->name;
+                        ->editColumn('doctor_id', function(HardLevel $hardlevel) {
+                            return optional($hardlevel->doctor)->name;
                         }) 
                         ->rawColumns(['action'])
                         ->toJson();
@@ -69,9 +69,9 @@ class CategoryController extends Controller
             $data = $request->all();
             $data["doctor_id"] = Auth::user()->fid;
              
-            $category = Category::create($data); 
+            $hardlevel = HardLevel::create($data); 
             
-            notify(__('add category'), __('add category') . " " . $category->name); 
+            notify(__('add hardlevel'), __('add hardlevel') . " " . $hardlevel->name); 
             return Message::success(Message::$DONE);
         } catch (Exception $ex) {
             return Message::error(Message::$ERROR);
@@ -95,9 +95,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(HardLevel $hardlevel)
     { 
-        return view("doctor.category.edit", compact("category"));
+        return $hardlevel->getViewBuilder()->loadEditView();
     }
 
     /**
@@ -107,12 +107,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, HardLevel $hardlevel)
     { 
         try {
-            $category->update($request->all()); 
+            $hardlevel->update($request->all()); 
             
-            notify(__('edit category'), __('edit category') . " " . $category->name);
+            notify(__('edit hardlevel'), __('edit hardlevel') . " " . $hardlevel->name);
             return Message::success(Message::$EDIT);
         } catch (\Exception $ex) {
             return Message::error(Message::$ERROR);
@@ -125,14 +125,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(HardLevel $hardlevel)
     { 
         try { 
-            if (!$category->can_delete)
-                return Message::error("cant delete this category");
+            if (!$hardlevel->can_delete)
+                return Message::error("cant delete this hardlevel");
             
-            notify(__('remove category'), __('remove category') . " " . $category->name);
-            $category->delete();
+            notify(__('remove hardlevel'), __('remove hardlevel') . " " . $hardlevel->name);
+            $hardlevel->delete();
             return Message::success(Message::$DONE);
         } catch (\Exception $ex) {
             return Message::error(Message::$ERROR);

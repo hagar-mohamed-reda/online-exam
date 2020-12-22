@@ -55,6 +55,9 @@ class QuestionController extends Controller
                         ->editColumn('category_id', function(Question $question) {
                             return optional($question->category)->name;
                         })
+                        ->editColumn('hard_level_id', function(Question $question) {
+                            return optional($question->hardLevel)->name;
+                        })
                         ->editColumn('doctor_id', function(Question $question) {
                             return __(optional($question->doctor)->name);
                         })
@@ -163,6 +166,7 @@ class QuestionController extends Controller
                     "question_type_id" => $data['type_id'],
                     "course_id" => $data['course_id'],
                     "category_id" => $data['category_id'],
+                    "hard_level_id" => $data['hard_level_id'],
                     "doctor_id" =>  Auth::user()->fid,
                     "active" =>  1,
                 ]);

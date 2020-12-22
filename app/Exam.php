@@ -76,7 +76,7 @@ class Exam extends Model {
         foreach ($this->details()->get() as $item) {
             $questionCount = $this->questions()
                     ->join('exam_questions', 'exam_questions.id', '=', 'question_id')
-                    ->where('question_type_id', $item->question_type_id)
+                    ->where('hard_level_id', $item->question_type_id)
                     ->count();
 
             $typeIds = [];
@@ -84,7 +84,7 @@ class Exam extends Model {
             if ($item->number < $questionCount) {
                 $typeIds = $this->questions()
                         ->join('exam_questions', 'exam_questions.id', '=', 'question_id')
-                        ->where('question_type_id', $item->question_type_id)
+                        ->where('hard_level_id', $item->question_type_id)
                         ->orderByRaw("RAND()")
                         ->take($item->number)
                         ->pluck('question_id')
@@ -92,7 +92,7 @@ class Exam extends Model {
             } else {
                 $typeIds = $this->questions()
                         ->join('exam_questions', 'exam_questions.id', '=', 'question_id')
-                        ->where('question_type_id', $item->question_type_id) 
+                        ->where('hard_level_id', $item->question_type_id) 
                         ->pluck('question_id')
                         ->toArray();
             }

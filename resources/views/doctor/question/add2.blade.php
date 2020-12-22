@@ -18,7 +18,7 @@
     <form method="post" id="questionForm" action="{{ url('/') }}/question/store2"  id="form">   
         @csrf
         <div class="row" >
-            <div class="col-lg-4 col-md-4" >
+            <div class="col-lg-3 col-md-3" >
                 <label>{{ __('question_type') }}</label>
                 <select class="form-control type_id" required=""  name="type_id" onchange="checkOnType()" v-model="resource.type_id" >
                     <option >-- {{ __('select type') }} --</option>
@@ -27,7 +27,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-4 col-md-4" >
+            <div class="col-lg-3 col-md-3" >
                 <label>{{ __('categories') }}</label>
                 <select class="form-control category_id" required=""   name="category_id"  v-model="resource.category_id" >
                     <option>-- {{ __('select type') }} --</option>
@@ -36,7 +36,15 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-4 col-md-4" >
+            <div class="col-lg-3 col-md-3" >
+                <label>{{ __('hardlevels') }}</label>
+                <select class="form-control hard_level_id" required=""   name="hard_level_id"  v-model="resource.hard_level_id" > 
+                    @foreach(Auth::user()->toDoctor()->hardLevels()->get() as $item)
+                    <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-3 col-md-3" >
                 <label>{{ __('course') }}</label>
                 <select class="form-control select2 w3-block course_id" required=""  name="course_id" onclick="app.resource.course_id=this.value" >
                     @foreach(Auth::user()->toDoctor()->doctorCourses()->get() as $item)
@@ -110,7 +118,7 @@
                             v-bind:name=" 'choice_' + index"
                             v-bind:checked="index2 == 0"
                             class="mulit_choice_answers question-answer"
-                            value="0"   
+                            v-bind:value="(index2 == 0)? 1 : 0"   
                             onchange="selectTrueFalse(this)"
                             type="radio"/>
                         <label v-bind:for="'choice_' + index + '-' +  index2" class="label-primary"></label>
@@ -268,6 +276,7 @@
         });
         
         resource.course_id = $('.course_id').val();
+        resource.hard_level_id = $('.hard_level_id').val();
         resource.category_id = $('.category_id').val();
         resource.type_id = app.resource.type_id;
         resource.questions = questions;

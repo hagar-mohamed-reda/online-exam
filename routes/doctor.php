@@ -22,6 +22,14 @@ Route::group(["middleware" => "admin"], function() {
     Route::get("category/remove/{category}", "doctor\CategoryController@destroy");
     Route::post("category/update/{category}", "doctor\CategoryController@update");
 
+// hardlevel routes
+    Route::get("hardlevel", "doctor\HardLevelController@index");
+    Route::post("hardlevel/store", "doctor\HardLevelController@store");
+    Route::get("hardlevel/data", "doctor\HardLevelController@getData");
+    Route::get("hardlevel/edit/{hardlevel}", "doctor\HardLevelController@edit");
+    Route::get("hardlevel/remove/{hardlevel}", "doctor\HardLevelController@destroy");
+    Route::post("hardlevel/update/{hardlevel}", "doctor\HardLevelController@update");
+
 // question routes
     Route::get("question", "doctor\QuestionController@index");
     Route::post("question/store", "doctor\QuestionController@store");

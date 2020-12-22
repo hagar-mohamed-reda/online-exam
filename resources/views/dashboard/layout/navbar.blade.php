@@ -34,6 +34,12 @@
                 </a>
             </li>  
               
+            <li class="treeview font w3-text-indigo" onclick="showPage('hardlevel')">
+                <a href="#">
+                    <i class="fa fa-asterisk"></i> <span>{{ __('hardlevel') }}</span> 
+                </a>
+            </li>  
+              
             <li class="treeview font w3-text-indigo" onclick="showPage('degreemap')">
                 <a href="#">
                     <i class="fa fa-percent"></i> <span>{{ __('degreemap') }}</span> 
@@ -102,6 +108,12 @@
             <li class="treeview font w3-text-indigo" onclick="showPage('category')">
                 <a href="#">
                     <i class="fa fa-address-book-o"></i> <span>{{ __('category') }}</span> 
+                </a>
+            </li>  
+              
+            <li class="treeview font w3-text-indigo" onclick="showPage('hardlevel')">
+                <a href="#">
+                    <i class="fa fa-asterisk"></i> <span>{{ __('hardlevel') }}</span> 
                 </a>
             </li>  
               

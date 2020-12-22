@@ -32,4 +32,5 @@
             @endforeach
         </div> 
     </div>
+    <br>
 </div>
